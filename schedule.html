@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>URJA — Schedule</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <img class="brand-mark" src="assets/urja_logo.png" alt="URJA logo">
+      <div>
+        <div class="brand-text">URJA</div>
+        <div class="brand-sub">Tech & Culture Fest</div>
+      </div>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="nav-menu" class="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="event-info.html">Event Info</a>
+      <a class="active" href="schedule.html">Schedule</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="team.html">Teams</a>
+      <a href="sponsors.html">Sponsors</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section page-hero">
+    <div class="container">
+      <h1>Schedule</h1>
+      <p class="lead">Two packed days. Tap between Day 1 & Day 2.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="tabs" role="tablist" aria-label="Schedule tabs">
+        <button class="tab active" data-day="day1" role="tab" aria-selected="true">Day 1 — 18 Sept</button>
+        <button class="tab" data-day="day2" role="tab" aria-selected="false">Day 2 — 19 Sept</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="day1" class="schedule-table">
+          <thead>
+            <tr><th>Time</th><th>Event</th><th>Venue</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>09:30</td><td>Opening Ceremony</td><td>Main Auditorium</td></tr>
+            <tr><td>10:30</td><td>Workshop: Build & Ship</td><td>Lab A</td></tr>
+            <tr><td>14:00</td><td>Hack Sprint</td><td>Innovation Hall</td></tr>
+            <tr><td>18:30</td><td>Cultural Night</td><td>Open Grounds</td></tr>
+          </tbody>
+        </table>
+
+        <table id="day2" class="schedule-table hidden" aria-hidden="true">
+          <thead>
+            <tr><th>Time</th><th>Event</th><th>Venue</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>09:30</td><td>Tech Expo</td><td>Exhibition Center</td></tr>
+            <tr><td>12:00</td><td>E-Sports Finals</td><td>Arena</td></tr>
+            <tr><td>16:00</td><td>Showcase & Awards</td><td>Main Auditorium</td></tr>
+            <tr><td>19:00</td><td>Closing Concert</td><td>Open Grounds</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="floating-dock" aria-label="Quick links">
+  <a class="dock-btn" href="index.html">🏠</a>
+  <a class="dock-btn" href="event-info.html">ℹ️</a>
+  <a class="dock-btn active" href="schedule.html">🗓️</a>
+  <a class="dock-btn" href="gallery.html">🖼️</a>
+  <a class="dock-btn" href="team.html">👥</a>
+  <a class="dock-btn" href="sponsors.html">⭐</a>
+</nav>
+
+<button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> URJA</div>
+    <nav class="footer-nav">
+      <a href="event-info.html">Event Info</a>
+      <a href="sponsors.html">Sponsors</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>
