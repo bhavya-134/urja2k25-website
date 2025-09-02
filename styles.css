@@ -1,3 +1,25 @@
+/* HOTFIX: Stabilize base sizing + robust team grid (paste near top) */
+html { font-size: 16px; -webkit-text-size-adjust: 100%; } /* stable rem baseline */
+:root { /* safety default if :root was missing earlier */
+  --text:#e9e6ff; --muted:#b8b0d9; --card:#1a0a34; --panel:#150028;
+  --border: rgba(255,255,255,.08); --brand:#00e5ff; --accent:#a2ff00;
+}
+
+/* Make the team grid behave responsively (auto-fit + minmax is robust) */
+.team-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Make sure large desktops don't stretch badly */
+.container{ max-width:1200px; margin: 0 auto; padding: 0 1rem; }
+
+/* Optional: better large-screen layout */
+@media (min-width: 1200px) {
+  .team-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
 :root{
   --bg:#10001e;           /* deep purple base */
   --panel:#150028;        /* panels */
