@@ -3,9 +3,166 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>URJA — Teams</title>
+  <title>URJA — Our Team</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Team-specific styles */
+    .team-hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .team-hero h1 {
+      font-family: Orbitron, Montserrat, sans-serif;
+      font-size: 2.8rem;
+      margin: 0 0 1rem;
+      background: linear-gradient(90deg, #BFFF00FF, #00FFFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .team-hero p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Filter buttons */
+    .team-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+    .team-filter-btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+    .team-filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,229,255,0.15);
+    }
+    .team-filter-btn.active {
+      background: linear-gradient(90deg, var(--brand), #62fff0);
+      color: #001018;
+      box-shadow: 0 8px 24px rgba(0,229,255,0.2);
+    }
+
+    /* Team grid */
+    .team-section {
+      margin: 3rem 0;
+    }
+    .team-section-title {
+      font-family: Orbitron, Montserrat, sans-serif;
+      font-size: 1.8rem;
+      color: var(--text);
+      margin: 0 0 1.5rem;
+      text-align: center;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Member cards */
+    .member-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--accent));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .member-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,229,255,0.12);
+    }
+    .member-card:hover::before {
+      opacity: 1;
+    }
+
+    .member-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      background: var(--panel);
+      border: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--brand);
+      font-family: Orbitron, Montserrat, sans-serif;
+    }
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .member-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 0.5rem;
+    }
+    .member-role {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 0.8rem;
+    }
+    .member-bio {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* Hidden sections */
+    .team-section.hidden {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .team-hero h1 { font-size: 2.2rem; }
+      .team-filters { gap: 0.5rem; }
+      .team-filter-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
+      .team-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+      .member-card { padding: 1.2rem; }
+    }
+  </style>
 </head>
 <body>
 <header class="site-header">
@@ -30,55 +187,289 @@
 </header>
 
 <main id="main">
-  <section class="section page-hero">
+  <section class="team-hero">
     <div class="container">
-      <h1>Teams</h1>
-      <p class="lead">Core crew behind URJA. (Photos optional — using logo placeholders)</p>
+      <h1>Our Team</h1>
+      <p>Meet the passionate individuals who make everything possible. Our diverse team brings together creativity, technical expertise, and dedication.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container cards-grid team-grid">
-      <article class="card team">
-        <img src="assets/urja_logo.png" alt="Team placeholder">
-        <h3>Convener Name</h3>
-        <p class="role">Convener</p>
-      </article>
-      <article class="card team">
-        <img src="assets/urja_logo.png" alt="Team placeholder">
-        <h3>Coordinator Name</h3>
-        <p class="role">Coordinator</p>
-      </article>
-      <article class="card team">
-        <img src="assets/urja_logo.png" alt="Team placeholder">
-        <h3>Operations Lead</h3>
-        <p class="role">Operations</p>
-      </article>
+  <section class="container">
+    <div class="team-filters">
+      <button class="team-filter-btn active" data-filter="all">All</button>
+      <button class="team-filter-btn" data-filter="core">Core Team</button>
+      <button class="team-filter-btn" data-filter="ir">IR Team</button>
+      <button class="team-filter-btn" data-filter="web-designing">Web Designing</button>
+      <button class="team-filter-btn" data-filter="designing">Designing Team</button>
+      <button class="team-filter-btn" data-filter="decoration">Decoration Team</button>
+      <button class="team-filter-btn" data-filter="marketing">Marketing Team</button>
+    </div>
+
+    <div class="team-section" data-category="core">
+      <h2 class="team-section-title">Core Team</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/mohit-patel.jpg" alt="Mohit Patel" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">MP</div>
+          </div>
+          <h3 class="member-name">Mohit Patel</h3>
+          <p class="member-role">Core Member</p>
+          <p class="member-bio">Leading the charge with strategic vision and dedication.</p>
+        </article>
+
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/harshal-kabrawala.jpg" alt="Harshal Kabrawala" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">HK</div>
+          </div>
+          <h3 class="member-name">Harshal Kabrawala</h3>
+          <p class="member-role">Core Member</p>
+          <p class="member-bio">The operational backbone, ensuring every detail is perfect.</p>
+        </article>
+      </div>
+    </div>
+    
+    <div class="team-section" data-category="ir">
+      <h2 class="team-section-title">IR Team</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/jash-patel.jpg" alt="Jash Patel" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">JP</div>
+          </div>
+          <h3 class="member-name">Jash Patel</h3>
+          <p class="member-role">IR Coordinator</p>
+          <p class="member-bio">Connecting with partners to create a strong network.</p>
+        </article>
+        
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/mohit-bhanabhagwanwala.jpg" alt="Mohit Bhanabhagwanwala" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">MB</div>
+          </div>
+          <h3 class="member-name">Mohit Bhanabhagwanwala</h3>
+          <p class="member-role">IR Coordinator</p>
+          <p class="member-bio">Fostering relationships that drive our success.</p>
+        </article>
+        
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/bhavya-joshi.jpg" alt="Bhavya Joshi" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">BJ</div>
+          </div>
+          <h3 class="member-name">Bhavya Joshi</h3>
+          <p class="member-role">IR Coordinator</p>
+          <p class="member-bio">Dedicated to building and maintaining key partnerships.</p>
+        </article>
+      </div>
+    </div>
+    
+    <div class="team-section" data-category="web-designing">
+      <h2 class="team-section-title">Web Designing</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/bhavya-tharakan.jpg" alt="Bhavya Tharakan" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">BT</div>
+          </div>
+          <h3 class="member-name">Bhavya Tharakan</h3>
+          <p class="member-role">Web Developer</p>
+          <p class="member-bio">Building a seamless digital experience for all our users.</p>
+        </article>
+      </div>
+    </div>
+    
+    
+    <div class="team-section" data-category="designing">
+      <h2 class="team-section-title">Designing Team</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/prisha-gandhi.jpg" alt="Prisha Gandhi" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">PG</div>
+          </div>
+          <h3 class="member-name">Prisha Gandhi</h3>
+          <p class="member-role">Designer</p>
+          <p class="member-bio">Crafting the visual identity of our fest with flair.</p>
+        </article>
+        
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/meet-surti.jpg" alt="Meet Surti" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">MS</div>
+          </div>
+          <h3 class="member-name">Meet Surti</h3>
+          <p class="member-role">Designer</p>
+          <p class="member-bio">Bringing ideas to life through compelling design.</p>
+        </article>
+      </div>
+    </div>
+    
+    
+    <div class="team-section" data-category="decoration">
+      <h2 class="team-section-title">Decoration Team</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/revathy-nair.jpg" alt="Revathy Nair" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">RN</div>
+          </div>
+          <h3 class="member-name">Revathy Nair</h3>
+          <p class="member-role">Decoration Coordinator</p>
+          <p class="member-bio">Transforming our space into an unforgettable atmosphere.</p>
+        </article>
+        
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/dhruti-parmar.jpg" alt="Dhruti Parmar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">DP</div>
+          </div>
+          <h3 class="member-name">Dhruti Parmar</h3>
+          <p class="member-role">Decoration Coordinator</p>
+          <p class="member-bio">Adding the creative sparkle that makes our fest shine.</p>
+        </article>
+      </div>
+    </div>
+    
+    <div class="team-section" data-category="marketing">
+      <h2 class="team-section-title">Marketing Team</h2>
+      <div class="team-grid">
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/shivam-vaishnav.jpg" alt="Shivam Vaishnav" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">SV</div>
+          </div>
+          <h3 class="member-name">Shivam Vaishnav</h3>
+          <p class="member-role">Marketing Coordinator</p>
+          <p class="member-bio">Spreading the word and building excitement for our event.</p>
+        </article>
+        
+        <article class="member-card">
+          <div class="member-avatar">
+            <img src="assets/team/veer-shah.jpg" alt="Veer Shah" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div style="display:none;">VS</div>
+          </div>
+          <h3 class="member-name">Veer Shah</h3>
+          <p class="member-role">Marketing Member</p>
+          <p class="member-bio">Crafting campaigns that resonate with our audience.</p>
+        </article>
+      </div>
     </div>
   </section>
 </main>
 
 <nav class="floating-dock" aria-label="Quick links">
-  <a class="dock-btn" href="index.html">🏠</a>
-  <a class="dock-btn" href="event-info.html">ℹ️</a>
-  <a class="dock-btn" href="schedule.html">🗓️</a>
-  <a class="dock-btn" href="gallery.html">🖼️</a>
-  <a class="dock-btn active" href="team.html">👥</a>
-  <a class="dock-btn" href="sponsors.html">⭐</a>
+  <a class="dock-btn" href="index.html" aria-label="Home">🏠</a>
+  <a class="dock-btn" href="event-info.html" aria-label="Event Info">ℹ️</a>
+  <a class="dock-btn" href="schedule.html" aria-label="Schedule">🗓️</a>
+  <a class="dock-btn" href="gallery.html" aria-label="Gallery">🖼️</a>
+  <a class="dock-btn active" href="teams.html" aria-label="Teams">👥</a>
+  <a class="dock-btn" href="sponsors.html" aria-label="Sponsors">⭐</a>
 </nav>
 
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <div>© <span id="year"></span> URJA</div>
-    <nav class="footer-nav">
-      <a href="event-info.html">Event Info</a>
-      <a href="sponsors.html">Sponsors</a>
-    </nav>
+  <div class="container">
+    <div class="footer-section made-by-section">
+      <p class="made-by-text">Made by <strong>Bhavya Tharakan</strong></p>
+    </div>
+
+    <div class="footer-section">
+      <h3 class="footer-title">Head of Department</h3>
+      <p class="footer-name">Dr. Vivaksha Jariwala</p>
+    </div>
+
+    <div class="footer-section">
+      <h3 class="footer-title">Faculty Coordinators</h3>
+      <div class="footer-names">
+        <p class="footer-name">Prof. Hiren Vavaiya</p>
+        <p class="footer-name">Prof. Ankit Patel</p>
+        <p class="footer-name">Prof. Karishma Desai</p>
+        <p class="footer-name">Prof. Nitya Komalan</p>
+      </div>
+    </div>
+
+    <div class="footer-section footer-social">
+      <h3 class="footer-title">Follow us on Instagram!</h3>
+      <a href="https://instagram.com/urja_scet" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
+        <div class="instagram-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <defs>
+              <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f09433"/>
+                <stop offset="25%" style="stop-color:#e6683c"/>
+                <stop offset="50%" style="stop-color:#dc2743"/>
+                <stop offset="75%" style="stop-color:#cc2366"/>
+                <stop offset="100%" style="stop-color:#bc1888"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> URJA - All Rights Reserved</p>
+    </div>
   </div>
 </footer>
 
-<script src="script.js" defer></script>
+
+<script>
+// Team filtering functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const filterBtns = document.querySelectorAll('.team-filter-btn');
+  const teamSections = document.querySelectorAll('.team-section');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Update active button
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      // Show/hide sections
+      teamSections.forEach(section => {
+        if (filter === 'all' || section.dataset.category === filter) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Set current year
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Basic navigation functionality
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.getElementById('nav-menu');
+  if (navToggle && navMenu) {
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!expanded));
+      navMenu.classList.toggle('show');
+    });
+  }
+
+  // Back to top
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (!backToTop) return;
+    if (window.scrollY > 600) backToTop.style.display = 'block';
+    else backToTop.style.display = 'none';
+  });
+  backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+});
+</script>
 </body>
 </html>
+

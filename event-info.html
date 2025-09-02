@@ -23,7 +23,7 @@
         <a class="active" href="event-info.html">Event Info</a>
         <a href="schedule.html">Schedule</a>
         <a href="gallery.html">Gallery</a>
-        <a href="teams.html">Teams</a>
+        <a href="team.html">Teams</a>
         <a href="sponsors.html">Sponsors</a>
       </nav>
     </div>
@@ -31,9 +31,12 @@
 
   <main id="main" class="urja-events-section">
     <div class="container">
-      <h1 style="font-size:1.9rem; margin:0; color:var(--brand); font-family:Orbitron, Montserrat, sans-serif;">Events</h1>
-      <p style="color:var(--muted); margin-top:.4rem;">Tap any event to see details (posters are placeholders). Click <strong>Register</strong> to sign up.</p>
-
+        <section class="section page-hero">
+            <div class="container">
+             <h1>Events</h1>
+             <p class="lead">Tap any event to see details. Click <strong>Register</strong> to sign up.</p>
+            </div>
+        </section>
       <!-- FILTER BAR -->
       <div class="urja-filter-bar" aria-label="Event filters" role="toolbar" style="margin-top:1rem;">
         <button class="urja-filter-btn urja-active" data-filter="all" aria-pressed="true">All</button>
@@ -42,110 +45,45 @@
       </div>
 
       <div class="urja-events-grid" id="urjaEventsGrid" style="margin-top:1rem;">
-        <!-- Tech events (first 5 + Robo Soccer) -->
-        <!-- NOTE: set data-form-endpoint to your Formspree/Getform URL AFTER you create the form -->
-        <!-- Tech events -->
-<div class="urja-event-card" data-event="Aavishar" data-category="tech" data-team="true" data-team-max="4" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
+        <!-- Card placeholders: data-event must match your file names (e.g. "Aavishar") -->
+        <!-- Updated to use data-form-link instead of data-form-endpoint -->
+        <div class="urja-event-card" data-event="Aavishar" data-category="tech" data-team="true" data-team-max="4" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Abhivyakthi" data-category="tech" data-team="false" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Code-to-Circuit" data-category="tech" data-team="true" data-team-max="2" data-form-link="https://forms.gle/JdLLjUm72BzixwoS7"></div>
+        <div class="urja-event-card" data-event="Game-of-Drone" data-category="tech" data-team="false" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Quiz-Whitz-Blitz" data-category="tech" data-team="false" data-form-link=""></div>
 
-<div class="urja-event-card" data-event="Abhivyakthi" data-category="tech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Code-to-Circuit" data-category="tech" data-team="true" data-team-max="2" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Game-of-Drone" data-category="tech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Quiz-Whitz-Blitz" data-category="tech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<!-- Non-tech etc. -->
-<div class="urja-event-card" data-event="Escape-the-Unknown" data-category="nontech" data-team="true" data-team-max="2" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="The-Land-of-Ludo" data-category="nontech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Meme-Creation" data-category="nontech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Bidwars" data-category="nontech" data-team="false" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="NFS" data-category="nontech" data-team="true" data-team-max="4" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
-
-<div class="urja-event-card" data-event="Robo-Soccer" data-category="tech" data-team="true" data-team-max="5" data-form-endpoint="PUT_ENDPOINT_HERE">...</div>
+        <div class="urja-event-card" data-event="Escape-the-Unknown" data-category="nontech" data-team="true" data-team-max="2" data-form-link=""></div>
+        <div class="urja-event-card" data-event="The-Land-of-Ludo" data-category="nontech" data-team="false" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Meme-Creation" data-category="nontech" data-team="false" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Bidwars" data-category="nontech" data-team="false" data-form-link=""></div>
+        <div class="urja-event-card" data-event="NFS" data-category="nontech" data-team="true" data-team-max="4" data-form-link=""></div>
+        <div class="urja-event-card" data-event="Robo-Soccer" data-category="tech" data-team="true" data-team-max="5" data-form-link=""></div>
       </div>
     </div>
   </main>
 
-  <!-- Detail modal (hidden) — this includes Register button + inline registration form -->
-  <div class="urja-event-modal" role="dialog" aria-hidden="true">
-    <div class="urja-event-modal-content">
+  <!-- Detail modal (hidden) — poster + register button only -->
+  <div class="urja-event-modal" role="dialog" aria-hidden="true" aria-modal="true">
+    <div class="urja-event-modal-content" role="document">
       <button class="urja-event-modal-close" aria-label="Close">✕</button>
 
       <div class="urja-event-modal-header">
-        <img src="assets/ctc.jpg" alt="Event poster" />
+        <!-- poster receives src dynamically; aspect ratio controlled by CSS (3:4) -->
+        <img src="assets/urja_logo.png" alt="Event poster" />
       </div>
 
       <div class="urja-event-modal-body">
         <h2>Event Title</h2>
         <p class="desc">Short description will appear here.</p>
 
-        <h4>Rules</h4>
-        <ul class="rules"></ul>
+        <h4 class="urja-entry_fees-heading">Entry Fees</h4>
+        <ul class="fees"></ul>
 
-        <!-- Register CTA -->
-        <div style="margin-top:1rem;">
-          <button class="urja-register-open btn">Register</button>
+        <div style="margin-top:1rem; display:flex; gap:.6rem; align-items:center;">
+          <a class="urja-modal-register-btn btn" href="#" target="_blank" rel="noopener noreferrer">Register</a>
+          <button type="button" class="urja-modal-close-inline btn-ghost">Close</button>
         </div>
-
-        <!-- Registration form (hidden initially) -->
-        <form class="urja-register-form" style="display:none; margin-top:1rem;" method="POST" novalidate>
-          <input type="hidden" name="event_name" class="urja-hidden-eventname" value="">
-
-          <label><strong>Name (as on certificate)</strong></label>
-          <input name="name" type="text" required class="urja-input" />
-
-          <label><strong>Year</strong></label>
-          <select name="year" required class="urja-input">
-            <option value="">Select year</option>
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
-            <option>4th</option>
-          </select>
-
-          <label><strong>Branch</strong></label>
-          <select name="branch" required class="urja-input">
-            <option value="">Select branch</option>
-            <option>Computer</option>
-            <option>IT</option>
-            <option>Electrical</option>
-            <option>Electrical &amp; Communication</option>
-            <option>Mechanical</option>
-            <option>IC</option>
-          </select>
-
-          <label><strong>SCET Id</strong></label>
-          <input name="scet_id" type="text" required class="urja-input" />
-
-          <label><strong>Mobile No.</strong></label>
-          <input name="mobile" type="tel" required class="urja-input" pattern="[\+]?[0-9\s\-]+" />
-
-          <!-- Team area (shown only if data-team="true") -->
-          <div class="urja-team-area" style="display:none; margin-top: .6rem; border-radius:10px; padding:.6rem; border:1px solid var(--border); background: linear-gradient(180deg, rgba(255,255,255,.01), transparent);">
-            <label><strong>Team Name</strong></label>
-            <input name="team_name" type="text" class="urja-input" />
-
-            <div class="urja-team-members">
-              <!-- member rows appended here -->
-            </div>
-
-            <div style="margin-top:.6rem;">
-              <button type="button" class="urja-add-member btn-sm">+ Add member</button>
-              <button type="button" class="urja-remove-member btn-ghost" style="margin-left:.5rem;">- Remove last</button>
-              <div class="urja-team-note" style="color:var(--muted); margin-top:.4rem; font-size:.9rem;">Add team members (name, SCET Id, mobile). Leader is the person who registers.</div>
-            </div>
-          </div>
-
-          <div style="margin-top:1rem;">
-            <button type="submit" class="urja-submit btn">Submit registration</button>
-            <span class="urja-form-status" style="margin-left:.8rem;color:var(--muted);"></span>
-          </div>
-        </form>
       </div>
 
       <div class="urja-event-modal-footer">
@@ -164,21 +102,61 @@
     <a class="dock-btn active" href="event-info.html" aria-label="Event Info">ℹ️</a>
     <a class="dock-btn" href="schedule.html" aria-label="Schedule">🗓️</a>
     <a class="dock-btn" href="gallery.html" aria-label="Gallery">🖼️</a>
-    <a class="dock-btn" href="teams.html" aria-label="Teams">👥</a>
+    <a class="dock-btn" href="team.html" aria-label="Teams">👥</a>
     <a class="dock-btn" href="sponsors.html" aria-label="Sponsors">⭐</a>
   </nav>
 
   <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>© <span id="year"></span> URJA</div>
-      <nav class="footer-nav">
-        <a href="schedule.html">Schedule</a>
-        <a href="sponsors.html">Sponsors</a>
-      </nav>
+  <div class="container">
+    <div class="footer-section made-by-section">
+      <p class="made-by-text">Made by <strong>Bhavya Tharakan</strong></p>
     </div>
-  </footer>
+
+    <div class="footer-section">
+      <h3 class="footer-title">Head of Department</h3>
+      <p class="footer-name">Dr. Vivaksha Jariwala</p>
+    </div>
+
+    <div class="footer-section">
+      <h3 class="footer-title">Faculty Coordinators</h3>
+      <div class="footer-names">
+        <p class="footer-name">Prof. Hiren Vavaiya</p>
+        <p class="footer-name">Prof. Ankit Patel</p>
+        <p class="footer-name">Prof. Karishma Desai</p>
+        <p class="footer-name">Prof. Nitya Komalan</p>
+      </div>
+    </div>
+
+    <div class="footer-section footer-social">
+      <h3 class="footer-title">Follow us on Instagram!</h3>
+      <a href="https://instagram.com/urja_scet" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
+        <div class="instagram-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <defs>
+              <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f09433"/>
+                <stop offset="25%" style="stop-color:#e6683c"/>
+                <stop offset="50%" style="stop-color:#dc2743"/>
+                <stop offset="75%" style="stop-color:#cc2366"/>
+                <stop offset="100%" style="stop-color:#bc1888"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> URJA - All Rights Reserved</p>
+    </div>
+  </div>
+</footer>
+
 
   <script src="script.js" defer></script>
 </body>
