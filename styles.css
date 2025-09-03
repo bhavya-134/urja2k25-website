@@ -1,45 +1,35 @@
-:root{
-  /* Five Elements Color Palette */
-  /* Fire (Thermal → Electric) */
-  --fire-primary: #FF4500;
-  --fire-secondary: #FF6B35;
-  --fire-accent: #FFD700;
-  
-  /* Water (Hydro → Electric) */
-  --water-primary: #006994;
-  --water-secondary: #1E90FF;
-  --water-accent: #00CED1;
-  
-  /* Air (Wind → Electric) */
-  --air-primary: #87CEEB;
-  --air-secondary: #F0F8FF;
-  --air-accent: #FFFACD;
-  
-  /* Earth (Geothermal → Electric) */
-  --earth-primary: #8B4513;
-  --earth-secondary: #CD853F;
-  --earth-accent: #228B22;
-  
-  /* Space (Cosmic → Electric) */
-  --space-primary: #191970;
-  --space-secondary: #4B0082;
-  --space-accent: #9370DB;
-  
-  /* Electric (Central Energy) */
-  --electric-primary: #00e5ff;
-  --electric-secondary: #a2ff00;
-  --electric-accent: #FFFF00;
+/* HOTFIX: Stabilize base sizing + robust team grid (paste near top) */
+html { font-size: 16px; -webkit-text-size-adjust: 100%; } /* stable rem baseline */
+:root { /* safety default if :root was missing earlier */
+  --text:#e9e6ff; --muted:#b8b0d9; --card:#1a0a34; --panel:#150028;
+  --border: rgba(255,255,255,.08); --brand:#00e5ff; --accent:#a2ff00;
+}
 
-  /* Updated base variables */
-  --bg: #0a0016;
-  --panel: #150028;
-  --card: #1a0a34;
-  --text: #e9e6ff;
-  --muted: #b8b0d9;
-  --brand: var(--electric-primary);
-  --accent: var(--electric-secondary);
-  --border: rgba(255,255,255,.08);
-  --shadow: 0 10px 30px rgba(0,0,0,.35);
+/* Make the team grid behave responsively (auto-fit + minmax is robust) */
+.team-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Make sure large desktops don't stretch badly */
+.container{ max-width:1200px; margin: 0 auto; padding: 0 1rem; }
+
+/* Optional: better large-screen layout */
+@media (min-width: 1200px) {
+  .team-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+:root{
+  --bg:#10001e;           /* deep purple base */
+  --panel:#150028;        /* panels */
+  --card:#1a0a34;         /* cards */
+  --text:#e9e6ff;         /* warm white */
+  --muted:#b8b0d9;        /* soft lilac */
+  --brand:#00e5ff;        /* neon cyan */
+  --accent:#a2ff00;       /* neon lime */
+  --border:rgba(255,255,255,.08);
+  --shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
 *{ box-sizing:border-box; }
@@ -47,34 +37,11 @@ html,body{ height:100%; }
 body{
   margin:0;
   color:var(--text);
+  background:
+    radial-gradient(900px 500px at 80% -10%, rgba(0,229,255,.12), transparent 60%),
+    radial-gradient(700px 400px at 10% 0%, rgba(162,255,0,.08), transparent 60%),
+    linear-gradient(180deg, #0a0016, var(--bg));
   font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  
-  /* Dynamic Elemental Background System */
-  background: 
-    /* Animated energy particles from elements */
-    radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(30, 144, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(139, 69, 19, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 60% 80%, rgba(135, 206, 235, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 60%, rgba(147, 112, 219, 0.08) 0%, transparent 50%),
-    
-    /* Electric energy field */
-    radial-gradient(ellipse at center, rgba(0, 229, 255, 0.03) 0%, transparent 70%),
-    
-    /* Deep space base */
-    linear-gradient(135deg, #0a0016 0%, #1a0a2e 50%, #16213e 100%);
-  
-  /* Animate the background */
-  background-size: 
-    300px 300px,
-    250px 250px,
-    400px 400px,
-    200px 200px,
-    350px 350px,
-    800px 600px,
-    100% 100%;
-  
-  animation: elementalFlow 20s ease-in-out infinite;
 }
 img{ max-width:100%; display:block; }
 a{ color:var(--brand); text-decoration:none; }
@@ -145,85 +112,7 @@ a{ color:var(--brand); text-decoration:none; }
   0%{ transform:rotateX(180deg); }
   100%{ transform:rotateX(0deg); }
 }
-/* Background animation keyframes */
-@keyframes elementalFlow {
-  0%, 100% {
-    background-position: 
-      0% 0%,
-      100% 100%,
-      50% 50%,
-      80% 20%,
-      20% 80%,
-      center,
-      0% 0%;
-  }
-  25% {
-    background-position: 
-      10% 90%,
-      90% 10%,
-      60% 40%,
-      70% 30%,
-      30% 70%,
-      center,
-      0% 0%;
-  }
-  50% {
-    background-position: 
-      90% 10%,
-      10% 90%,
-      40% 60%,
-      60% 40%,
-      40% 60%,
-      center,
-      0% 0%;
-  }
-  75% {
-    background-position: 
-      80% 20%,
-      20% 80%,
-      70% 30%,
-      30% 70%,
-      60% 40%,
-      center,
-      0% 0%;
-  }
-}
-
-/* Section-specific elemental backgrounds */
-.section.fire-element {
-  background: 
-    radial-gradient(circle at 30% 70%, rgba(255, 69, 0, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 70% 30%, rgba(255, 107, 53, 0.12) 0%, transparent 50%),
-    linear-gradient(45deg, transparent 0%, rgba(255, 215, 0, 0.05) 100%);
-}
-
-.section.water-element {
-  background: 
-    radial-gradient(circle at 60% 40%, rgba(0, 105, 148, 0.12) 0%, transparent 60%),
-    radial-gradient(circle at 40% 80%, rgba(30, 144, 255, 0.10) 0%, transparent 50%),
-    linear-gradient(180deg, transparent 0%, rgba(0, 206, 209, 0.04) 100%);
-}
-
-.section.earth-element {
-  background: 
-    radial-gradient(circle at 20% 60%, rgba(139, 69, 19, 0.10) 0%, transparent 60%),
-    radial-gradient(circle at 80% 40%, rgba(205, 133, 63, 0.08) 0%, transparent 50%),
-    linear-gradient(270deg, transparent 0%, rgba(34, 139, 34, 0.04) 100%);
-}
-
-.section.air-element {
-  background: 
-    radial-gradient(circle at 50% 20%, rgba(135, 206, 235, 0.10) 0%, transparent 70%),
-    radial-gradient(circle at 30% 70%, rgba(240, 248, 255, 0.05) 0%, transparent 60%),
-    linear-gradient(90deg, transparent 0%, rgba(255, 250, 205, 0.03) 100%);
-}
-
-.section.space-element {
-  background: 
-    radial-gradient(circle at 40% 30%, rgba(25, 25, 112, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 20% 80%, rgba(147, 112, 219, 0.08) 0%, transparent 60%);
-}
+.cd-note{ margin-top:.8rem; color:var(--muted); font-size:.9rem; text-align:center; }
 
 /* Cards & grids */
 .cards-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; }
@@ -255,11 +144,191 @@ a{ color:var(--brand); text-decoration:none; }
 .gallery-grid .gallery-item img{ width:100%; height:220px; object-fit:contain; background:var(--panel); border:1px solid var(--border); border-radius:12px; }
 
 /* Footer */
-.site-footer{ border-top:1px solid var(--border); background:#0b001a; }
-.footer-inner{ display:flex; align-items:center; justify-content:space-between; min-height:64px; }
-.footer-nav{ display:flex; gap:1rem; }
-.footer-nav a{ color:var(--muted); }
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: black;
+  padding: 3rem 0 1.5rem;
+}
 
+.site-footer .container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.footer-section {
+  text-align: center;
+}
+
+.footer-title {
+  font-family: Orbitron, Montserrat, sans-serif;
+  font-size: 1rem;
+  color: var(--brand);
+  margin: 0 0 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-names {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer-name {
+  color: var(--text);
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.instagram-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  padding: 2px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.instagram-link:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(188, 24, 136, 0.3);
+}
+
+.instagram-icon {
+  background: var(--bg);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-bottom {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer-bottom p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* New Section for "Made by" */
+.made-by-section {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.made-by-text {
+  font-size: 1rem;
+  color: var(--text);
+  margin: 0;
+}
+
+.made-by-text strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .site-footer .container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+  
+  .footer-section {
+    text-align: center;
+  }
+  
+  .footer-names {
+    align-items: center;
+  }
+  
+  .made-by-section {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 2rem 0 1rem;
+  }
+  
+  .footer-title {
+    font-size: 0.9rem;
+  }
+  
+  .footer-name {
+    font-size: 0.85rem;
+  }
+  
+  .instagram-link {
+    width: 50px;
+    height: 50px;
+  }
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .site-footer .container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+  
+  .footer-section {
+    text-align: center;
+  }
+  
+  .footer-names {
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 2rem 0 1rem;
+  }
+  
+  .footer-title {
+    font-size: 0.9rem;
+  }
+  
+  .footer-name {
+    font-size: 0.85rem;
+  }
+  
+  .instagram-link {
+    width: 50px;
+    height: 50px;
+  }
+}
 /* Floating Quick Links Dock */
 /* Bottom-centered floating dock (rounded pill like your screenshot) */
 .floating-dock {
@@ -311,8 +380,17 @@ a{ color:var(--brand); text-decoration:none; }
 }
 
 /* Page hero */
-.page-hero{ padding-top:4rem; padding-bottom:1rem; }
-.page-hero h1{ font-family: Orbitron, Montserrat, sans-serif; font-size:2.4rem; margin:.2rem 0 .4rem; }
+.page-hero{ text-align: center;
+padding: 3rem 0 2rem; }
+.page-hero h1 {
+  font-family: Orbitron, Montserrat, sans-serif;
+  font-size: 2.8rem;
+  margin: 0 0 1rem;
+  background: linear-gradient(90deg, #BFFF00FF, #00FFFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* Responsive */
 @media (max-width: 980px){
@@ -353,8 +431,9 @@ a{ color:var(--brand); text-decoration:none; }
 /* Grid of event cards */
 .urja-events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  /* This creates columns that are at least 15rem wide and fills the available space */
+  grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr));
+  gap: 1.5rem; /* Space between the grid items */
   margin-top: 1rem;
 }
 
@@ -372,56 +451,9 @@ a{ color:var(--brand); text-decoration:none; }
   padding: .85rem;
   min-height: 180px;
 }
-/* Enhanced cards with elemental themes */
-.urja-event-card.fire-theme {
-  border: 1px solid rgba(255, 69, 0, 0.3);
-  background: linear-gradient(135deg, var(--card) 0%, rgba(255, 69, 0, 0.05) 100%);
-}
-
-.urja-event-card.water-theme {
-  border: 1px solid rgba(30, 144, 255, 0.3);
-  background: linear-gradient(135deg, var(--card) 0%, rgba(30, 144, 255, 0.05) 100%);
-}
-
-.urja-event-card.earth-theme {
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  background: linear-gradient(135deg, var(--card) 0%, rgba(139, 69, 19, 0.05) 100%);
-}
-
-.urja-event-card.air-theme {
-  border: 1px solid rgba(135, 206, 235, 0.3);
-  background: linear-gradient(135deg, var(--card) 0%, rgba(135, 206, 235, 0.05) 100%);
-}
-
-.urja-event-card.space-theme {
-  border: 1px solid rgba(147, 112, 219, 0.3);
-  background: linear-gradient(135deg, var(--card) 0%, rgba(147, 112, 219, 0.05) 100%);
-}
-
-/* Elemental hover effects */
-.urja-event-card.fire-theme:hover {
-  box-shadow: 0 14px 36px rgba(255, 69, 0, 0.15);
+.urja-event-card:hover {
   transform: translateY(-6px);
-}
-
-.urja-event-card.water-theme:hover {
-  box-shadow: 0 14px 36px rgba(30, 144, 255, 0.15);
-  transform: translateY(-6px);
-}
-
-.urja-event-card.earth-theme:hover {
-  box-shadow: 0 14px 36px rgba(139, 69, 19, 0.15);
-  transform: translateY(-6px);
-}
-
-.urja-event-card.air-theme:hover {
-  box-shadow: 0 14px 36px rgba(135, 206, 235, 0.15);
-  transform: translateY(-6px);
-}
-
-.urja-event-card.space-theme:hover {
-  box-shadow: 0 14px 36px rgba(147, 112, 219, 0.15);
-  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(0,229,255,.12);
 }
 
 /* Poster in 3:4 aspect ratio with subtle shadow */
@@ -520,7 +552,7 @@ a{ color:var(--brand); text-decoration:none; }
   color: var(--accent);
   font-size: 1rem;
 }
-.urja-event-modal-body .urja-rules-heading { 
+.urja-event-mod.urja-entry_fees-heading { 
   margin-top:.5rem; 
   margin-bottom:.25rem; 
   color:var(--accent); 
@@ -615,18 +647,6 @@ a{ color:var(--brand); text-decoration:none; }
 }
 .urja-card-show {
   animation: urjaFadeInUp .28s ease both;
-}
-
-/* Performance optimization for reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  body {
-    animation: none;
-  }
-  
-  .urja-card-show,
-  .urja-card-hidden {
-    animation: none;
-  }
 }
 
 /* small helper */
