@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
      Event data (edit here later)
      =========================== */
   const URJA_EVENTS = {
-    "Aavishar": { title:"Aavishar", fees:["Presentation time: 5–7 minutes","Max team size: 3"], coordinators:["KALYAAN KAPADIA, AMIT RAINA"], volunteers:["RUPESH NIKAM"] },
+    "Aavishar": { title:"Aavishar", fees:["Free"], coordinators:["KALYAAN KAPADIA, AMIT RAINA"], volunteers:["RUPESH NIKAM"] },
     "Abhivyakthi": { title:"Abhivyakthi", fees:["Free"], coordinators:["KANHAI TRIVEDI, HARSHIT PATEL"], volunteers:["NISARG, AMAR"] },
     "Code-to-Circuit": { title:"Code to Circuit", fees:["Free"], coordinators:["BHAVYA THARAKAN,  YASHASVI AGARWAL, VISHWA PATEL"], volunteers:["RISHI, ADARSH, RIDHAM"] },
     "Game-of-Drone": { title:"Game of Drone", desc:"Placeholder for Game of Drone.", fees:["₹50/-"], coordinators:["VANSH PATEL, JIYA PATEL, PRISHA GANDHI"], volunteers:["PARI, NEEL, KASHYAP, MOXIT, SAHIL"] },
