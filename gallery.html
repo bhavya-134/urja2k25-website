@@ -282,7 +282,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  loadGalleryImages();
+  loadGalleryFromManifest();
   
   // Initialize existing script functionality
   if (typeof initializeApp === 'function') {
@@ -293,87 +293,44 @@ document.addEventListener('DOMContentLoaded', function() {
 let galleryImages = [];
 let currentImageIndex = 0;
 
-async function loadGalleryImages() {
+async function loadGalleryFromManifest() {
   const galleryContainer = document.getElementById('galleryContainer');
-  const commonExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-  const loadedImages = [];
-  
-  // Show loading message
-  galleryContainer.innerHTML = '<div class="gallery-loading">Loading gallery images...Please Wait for a moment 😅...</div>';
-  
-  // Try to load images with sequential naming (img1.jpg, img2.jpg, etc.)
-  let imageIndex = 1;
-  let consecutiveFailures = 0;
-  const maxConsecutiveFailures = 5; // Stop after 5 consecutive missing images
-  
-  while (consecutiveFailures < maxConsecutiveFailures) {
-    let imageFound = false;
-    
-    // Try each extension for the current index
-    for (const ext of commonExtensions) {
-      const imagePath = `assets/gallery/img${imageIndex}.${ext}`;
-      
-      try {
-        const imageExists = await checkImageExists(imagePath);
-        if (imageExists) {
-          loadedImages.push({
-            src: imagePath,
-            alt: `Gallery image ${imageIndex}`,
-            index: imageIndex
-          });
-          imageFound = true;
-          consecutiveFailures = 0;
-          break; // Found image with this index, move to next
-        }
-      } catch (error) {
-        // Image doesn't exist, continue
-      }
-    }
-    
-    if (!imageFound) {
-      consecutiveFailures++;
-    }
-    
-    imageIndex++;
+  galleryContainer.innerHTML = ''; // remove loading text immediately
+
+  try {
+    const res = await fetch('gallery.json', { cache: 'no-store' }); // fetch manifest
+    if (!res.ok) throw new Error('Manifest fetch failed');
+    const files = await res.json();
+
+    galleryImages = files.map((src, i) => ({ src, alt: `Gallery image ${i+1}` }));
+
+    files.forEach((src, index) => {
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item card';
+      galleryItem.style.animationDelay = `${index * 0.05}s`;
+
+      const img = document.createElement('img');
+      img.src = src;               // browser starts fetching immediately
+      img.alt = `Gallery image ${index + 1}`;
+      img.loading = 'lazy';       // still lazy but the request starts
+      img.addEventListener('error', () => {
+        // hide missing images cleanly
+        galleryItem.remove();
+      });
+
+      galleryItem.addEventListener('click', () => openLightbox(index));
+      galleryItem.appendChild(img);
+      galleryContainer.appendChild(galleryItem);
+    });
+
+    initializeLightbox();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('galleryContainer').innerHTML =
+      '<div class="gallery-loading">Failed to load gallery manifest.</div>';
   }
-  
-  // Store the loaded images globally for lightbox
-  galleryImages = loadedImages;
-  
-  // Clear loading message and display images
-  galleryContainer.innerHTML = '';
-  
-  if (loadedImages.length === 0) {
-    galleryContainer.innerHTML = `
-      <div class="gallery-loading">
-        <p>No images found in the gallery folder.</p>
-        <p>Add images named img1.jpg, img2.jpg, etc. to assets/gallery/</p>
-      </div>
-    `;
-    return;
-  }
-  
-  // Create gallery items
-  loadedImages.forEach((image, index) => {
-    const galleryItem = document.createElement('div');
-    galleryItem.className = 'gallery-item card';
-    galleryItem.style.animationDelay = `${index * 0.1}s`;
-    
-    const img = document.createElement('img');
-    img.src = image.src;
-    img.alt = image.alt;
-    img.loading = 'lazy'; // Optimize loading
-    
-    // Add click event for lightbox
-    galleryItem.addEventListener('click', () => openLightbox(index));
-    
-    galleryItem.appendChild(img);
-    galleryContainer.appendChild(galleryItem);
-  });
-  
-  // Initialize lightbox functionality
-  initializeLightbox();
 }
+
 
 function checkImageExists(imagePath) {
   return new Promise((resolve) => {
