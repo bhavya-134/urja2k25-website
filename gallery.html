@@ -33,24 +33,31 @@
   <section class="section page-hero">
     <div class="container">
       <h1>Gallery</h1>
-      <p class="lead">Images coming soon. Using placeholders for now.</p>
+      <p class="lead"><strong>Explore moments captured from URJA 2K24.</strong> (Tap on the img to view.)</p>
     </div>
   </section>
 
   <section class="section">
-    <div class="container cards-grid gallery-grid">
-      <!-- 8 placeholders -->
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
-      <div class="gallery-item card"><img src="assets/urja_logo.png" alt="Placeholder"></div>
+    <div class="container cards-grid gallery-grid" id="galleryContainer">
+      <!-- Gallery images will be loaded here dynamically -->
     </div>
   </section>
 </main>
+
+<!-- Lightbox Modal for full-size image viewing -->
+<div id="lightbox" class="lightbox-overlay" style="display: none;" role="dialog" aria-hidden="true" aria-modal="true">
+  <div class="lightbox-content">
+    <button class="lightbox-close" aria-label="Close lightbox">✕</button>
+    <img id="lightboxImage" src="" alt="Gallery image">
+    <div class="lightbox-nav">
+      <button class="lightbox-prev" aria-label="Previous image">‹</button>
+      <button class="lightbox-next" aria-label="Next image">›</button>
+    </div>
+    <div class="lightbox-counter">
+      <span id="lightboxCounter">1 / 1</span>
+    </div>
+  </div>
+</div>
 
 <nav class="floating-dock" aria-label="Quick links">
   <a class="dock-btn" href="index.html">🏠</a>
@@ -111,6 +118,352 @@
     </div>
   </div>
 </footer>
+
+<style>
+/* Lightbox styles */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 16px 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  pointer-events: auto;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-prev {
+  margin-left: -60px;
+}
+
+.lightbox-next {
+  margin-right: -60px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+/* Gallery item hover effect */
+.gallery-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Loading animation */
+.gallery-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.gallery-item {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+/* Responsive adjustments for lightbox */
+@media (max-width: 768px) {
+  .lightbox-prev {
+    margin-left: -10px;
+    font-size: 1.5rem;
+    padding: 12px 16px;
+  }
+  
+  .lightbox-next {
+    margin-right: -10px;
+    font-size: 1.5rem;
+    padding: 12px 16px;
+  }
+  
+  .lightbox-close {
+    top: -30px;
+    font-size: 1.5rem;
+  }
+  
+  .lightbox-counter {
+    bottom: -30px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  loadGalleryImages();
+  
+  // Initialize existing script functionality
+  if (typeof initializeApp === 'function') {
+    initializeApp();
+  }
+});
+
+let galleryImages = [];
+let currentImageIndex = 0;
+
+async function loadGalleryImages() {
+  const galleryContainer = document.getElementById('galleryContainer');
+  const commonExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  const loadedImages = [];
+  
+  // Show loading message
+  galleryContainer.innerHTML = '<div class="gallery-loading">Loading gallery images...</div>';
+  
+  // Try to load images with sequential naming (img1.jpg, img2.jpg, etc.)
+  let imageIndex = 1;
+  let consecutiveFailures = 0;
+  const maxConsecutiveFailures = 5; // Stop after 5 consecutive missing images
+  
+  while (consecutiveFailures < maxConsecutiveFailures) {
+    let imageFound = false;
+    
+    // Try each extension for the current index
+    for (const ext of commonExtensions) {
+      const imagePath = `assets/gallery/img${imageIndex}.${ext}`;
+      
+      try {
+        const imageExists = await checkImageExists(imagePath);
+        if (imageExists) {
+          loadedImages.push({
+            src: imagePath,
+            alt: `Gallery image ${imageIndex}`,
+            index: imageIndex
+          });
+          imageFound = true;
+          consecutiveFailures = 0;
+          break; // Found image with this index, move to next
+        }
+      } catch (error) {
+        // Image doesn't exist, continue
+      }
+    }
+    
+    if (!imageFound) {
+      consecutiveFailures++;
+    }
+    
+    imageIndex++;
+  }
+  
+  // Store the loaded images globally for lightbox
+  galleryImages = loadedImages;
+  
+  // Clear loading message and display images
+  galleryContainer.innerHTML = '';
+  
+  if (loadedImages.length === 0) {
+    galleryContainer.innerHTML = `
+      <div class="gallery-loading">
+        <p>No images found in the gallery folder.</p>
+        <p>Add images named img1.jpg, img2.jpg, etc. to assets/gallery/</p>
+      </div>
+    `;
+    return;
+  }
+  
+  // Create gallery items
+  loadedImages.forEach((image, index) => {
+    const galleryItem = document.createElement('div');
+    galleryItem.className = 'gallery-item card';
+    galleryItem.style.animationDelay = `${index * 0.1}s`;
+    
+    const img = document.createElement('img');
+    img.src = image.src;
+    img.alt = image.alt;
+    img.loading = 'lazy'; // Optimize loading
+    
+    // Add click event for lightbox
+    galleryItem.addEventListener('click', () => openLightbox(index));
+    
+    galleryItem.appendChild(img);
+    galleryContainer.appendChild(galleryItem);
+  });
+  
+  // Initialize lightbox functionality
+  initializeLightbox();
+}
+
+function checkImageExists(imagePath) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = imagePath;
+  });
+}
+
+function initializeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxClose = document.querySelector('.lightbox-close');
+  const lightboxPrev = document.querySelector('.lightbox-prev');
+  const lightboxNext = document.querySelector('.lightbox-next');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  
+  // Close lightbox events
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  
+  // Navigation events
+  lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
+  lightboxNext.addEventListener('click', () => navigateLightbox(1));
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.style.display === 'flex') {
+      switch(e.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          navigateLightbox(-1);
+          break;
+        case 'ArrowRight':
+          navigateLightbox(1);
+          break;
+      }
+    }
+  });
+}
+
+function openLightbox(index) {
+  if (galleryImages.length === 0) return;
+  
+  currentImageIndex = index;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  
+  lightboxImage.src = galleryImages[currentImageIndex].src;
+  lightboxImage.alt = galleryImages[currentImageIndex].alt;
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  
+  lightbox.style.display = 'flex';
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  lightbox.style.display = 'none';
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = ''; // Restore scrolling
+}
+
+function navigateLightbox(direction) {
+  if (galleryImages.length === 0) return;
+  
+  currentImageIndex += direction;
+  
+  // Wrap around
+  if (currentImageIndex < 0) {
+    currentImageIndex = galleryImages.length - 1;
+  } else if (currentImageIndex >= galleryImages.length) {
+    currentImageIndex = 0;
+  }
+  
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  
+  lightboxImage.src = galleryImages[currentImageIndex].src;
+  lightboxImage.alt = galleryImages[currentImageIndex].alt;
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+}
+</script>
 
 <script src="script.js" defer></script>
 </body>

@@ -396,29 +396,93 @@ a{ color:var(--brand); text-decoration:none; }
 .hidden{ display:none; }
 
 /* Sponsors - Enhanced */
-.sponsor-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; align-items:center; }
-.sponsor{ 
-  background: var(--card); 
-  border: 1px solid var(--border); 
-  border-radius: 16px; 
-  padding: 1.5rem; 
-  display: grid; 
-  place-items: center; 
-  height: 120px; 
-  transition: transform .3s ease, box-shadow .3s ease; 
+/* Uniform, Big Sponsor Cards + Hover Zoom + Large Placeholders */
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  align-items: center;
 }
-.sponsor:hover{ 
-  transform: translateY(-4px); 
-  box-shadow: 0 12px 30px rgba(0,229,255,.15); 
-  border-color: rgba(0,229,255,.3);
+
+/* Card */
+.sponsor {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: grid;
+  place-items: center;
+  height: 220px;                       /* Uniform large card height */
+  transition: transform .28s cubic-bezier(.2,.8,.2,1),
+              box-shadow .28s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+  overflow: hidden;
 }
-.sponsor img{ 
-  max-height: 70px; 
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,.4)); 
-  transition: filter 0.3s ease;
+
+/* Card hover: lift a little */
+.sponsor:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  border-color: rgba(0,229,255,0.12);
 }
+
+/* Fixed logo box so all logos look consistent */
+.sponsor .logo-box {
+  width: 220px;      /* fixed width for uniformity */
+  height: 140px;     /* fixed height for uniformity */
+  display: grid;
+  place-items: center;
+}
+
+/* The actual <img> inside the box */
+.sponsor img {
+  width: 180px;         /* fairly large — adjust if you want bigger */
+  height: 120px;        /* keep same ratio box as logo-box */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;  /* preserve aspect ratio, no cropping */
+  transition: transform .28s cubic-bezier(.2,.8,.2,1),
+              filter .28s ease;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+}
+
+/* Logo zoom on card hover */
 .sponsor:hover img {
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,.4)) brightness(1.1);
+  transform: scale(1.08);
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,0.18)) brightness(1.05);
+}
+
+/* Placeholder styling (when an image isn't available) */
+.sponsor.placeholder {
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  border-style: dashed;
+  color: var(--muted);
+}
+
+/* Big placeholder icon (emoji / svg / inline) */
+.sponsor .placeholder-icon {
+  font-size: 48px;        /* large icon */
+  line-height: 1;
+  opacity: 0.9;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* Placeholder label */
+.sponsor .placeholder-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Small responsiveness tweak */
+@media (max-width: 420px) {
+  .sponsor { height: 180px; padding: 1rem; }
+  .sponsor .logo-box { width: 160px; height: 110px; }
+  .sponsor img { width: 140px; height: 95px; }
+  .sponsor .placeholder-icon { font-size: 42px; }
 }
 
 /* Teams - Enhanced */
