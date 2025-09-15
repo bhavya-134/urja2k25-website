@@ -580,7 +580,7 @@ function initTimelineAndEvents() {
    ======================================================= */
 class EarlyBirdBadge {
   constructor() {
-    this.targetTime = new Date('Sep 15, 2025 09:57:00 GMT+0530').getTime();
+    this.targetTime = Date.now() + (1 * 60 * 1000); // 2 minutes from now
     this.timeWindow = 35000; // 35 seconds
 
     this.modal = document.getElementById('earlyBirdModal');
