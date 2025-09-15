@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,42 +33,278 @@
   <section class="section page-hero">
     <div class="container">
       <h1>Schedule</h1>
-      <p class="lead">Two packed days. Tap between Day 1 & Day 2.</p>
+      <p class="lead">Not the actual Timetable</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
+      
+      <!-- Legend - Only 2 items -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background: #ff6b6b;"></div>
+          <span>Technical</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background: #ffe66d;"></div>
+          <span>Non-Technical</span>
+        </div>
+      </div>
+
+      <!-- Tabs -->
       <div class="tabs" role="tablist" aria-label="Schedule tabs">
         <button class="tab active" data-day="day1" role="tab" aria-selected="true">Day 1 — 19 Sept</button>
         <button class="tab" data-day="day2" role="tab" aria-selected="false">Day 2 — 20 Sept</button>
       </div>
 
-      <div class="table-wrapper">
-        <table id="day1" class="schedule-table">
-          <thead>
-            <tr><th>Time</th><th>Event</th><th>Venue</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>09:30</td><td>Opening Ceremony</td><td>To be updated </td></tr>
-            <tr><td>10:30</td><td>To be updated</td><td>To be updated</td></tr>
-            <tr><td>14:00</td><td>To be updated</td><td>To be updatedl</td></tr>
-            <tr><td>18:30</td><td>To be updated</td><td>To be updated</td></tr>
-          </tbody>
-        </table>
+      <!-- Day 1 Schedule -->
+      <div id="day1" class="timeline">
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">09:30 AM</div>
+            <div class="time-subtitle">Morning Session</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Opening Ceremony</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <table id="day2" class="schedule-table hidden" aria-hidden="true">
-          <thead>
-            <tr><th>Time</th><th>Event</th><th>Venue</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>09:30</td><td>To be updated</td><td>To be updated</td></tr>
-            <tr><td>12:00</td><td>E-To be updated</td><td>To be updated</td></tr>
-            <tr><td>16:00</td><td>To be updated</td><td>To be updated</td></tr>
-            <tr><td>19:00</td><td>To be updated</td><td>To be updated</td></tr>
-          </tbody>
-        </table>
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">10:30 AM</div>
+            <div class="time-subtitle">Multiple Events Running</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator tech"></div>
+              <div class="event-content">
+                <div class="event-title">Technical Event 1</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-indicator tech"></div>
+              <div class="event-content">
+                <div class="event-title">Technical Event 2</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">12:00 PM</div>
+            <div class="time-subtitle">Overlapping Events</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Cultural Event 1</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Cultural Event 2</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">01:00 PM</div>
+            <div class="time-subtitle">Lunch Break</div>
+          </div>
+          <div class="empty-slot">
+            🍽️ Lunch Break - All participants
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">02:30 PM</div>
+            <div class="time-subtitle">Afternoon Activities</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator tech"></div>
+              <div class="event-content">
+                <div class="event-title">Workshop Session</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Competition Round 1</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">06:30 PM</div>
+            <div class="time-subtitle">Day Closing</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Day 1 Wrap-up</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- Day 2 Schedule -->
+      <div id="day2" class="timeline hidden" aria-hidden="true">
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">09:30 AM</div>
+            <div class="time-subtitle">Day 2 Kickoff</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Day 2 Opening</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">11:00 AM</div>
+            <div class="time-subtitle">Simultaneous Events</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator tech"></div>
+              <div class="event-content">
+                <div class="event-title">Technical Finals</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-indicator tech"></div>
+              <div class="event-content">
+                <div class="event-title">Coding Competition</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">01:00 PM</div>
+            <div class="time-subtitle">Lunch Break</div>
+          </div>
+          <div class="empty-slot">
+            🍽️ Lunch Break - All participants
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">02:30 PM</div>
+            <div class="time-subtitle">Afternoon Sessions</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Cultural Showcase</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Art Exhibition</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="time-block">
+          <div class="time-header">
+            <div class="time-label">05:00 PM</div>
+            <div class="time-subtitle">Grand Finale</div>
+          </div>
+          <div class="events-list">
+            <div class="event-item">
+              <div class="event-indicator nontech"></div>
+              <div class="event-content">
+                <div class="event-title">Award Ceremony & Closing</div>
+                <div class="event-details">
+                  <div class="event-venue">📍 TBA</div>
+                  <div class="event-duration">⏱️ TBA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 </main>
@@ -92,19 +327,19 @@
     </div>
 
     <div class="footer-section">
-  <h3 class="footer-title">Head of Department</h3>
-  <p class="footer-name">Dr. Hitesh K. Mehta</p>
-</div>
+      <h3 class="footer-title">Head of Department</h3>
+      <p class="footer-name">Dr. Hitesh K. Mehta</p>
+    </div>
 
-<div class="footer-section">
-  <h3 class="footer-title">Faculty Coordinators</h3>
-  <div class="footer-names">
-    <p class="footer-name">Faculty 1</p>
-    <p class="footer-name">Faculty 2</p>
-    <p class="footer-name">Faculty 3</p>
-    <p class="footer-name">Faculty 4</p>
-  </div>
-</div>
+    <div class="footer-section">
+      <h3 class="footer-title">Faculty Coordinators</h3>
+      <div class="footer-names">
+        <p class="footer-name">Faculty 1</p>
+        <p class="footer-name">Faculty 2</p>
+        <p class="footer-name">Faculty 3</p>
+        <p class="footer-name">Faculty 4</p>
+      </div>
+    </div>
 
     <div class="footer-section footer-social">
       <h3 class="footer-title">Follow us on Instagram!</h3>
@@ -133,7 +368,6 @@
     </div>
   </div>
 </footer>
-
 
 <script src="script.js" defer></script>
 </body>

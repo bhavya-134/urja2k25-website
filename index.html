@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>URJA 2K25</title>
   <meta property="og:type" content="website">
-<meta property="og:url" content="https://urja2k25.netlify.app">
-<meta property="og:title" content="URJA 2K25">
-<meta property="og:image" content="https://urja2k25.netlify.app/assets/logos/urja_logo.png">
-
+  <meta property="og:url" content="https://urja2k25.netlify.app">
+  <meta property="og:title" content="URJA 2K25">
+  <meta property="og:image" content="https://urja2k25.netlify.app/assets/logos/urja_logo.png">
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="apple-touch-icon" href="assets/logos/favicon.jpg">
   <link rel="icon" type="image/png" href="assets/logos/favicon.jpg">
-    
   <meta name="theme-color" content="#190028" />
 </head>
-<body class="animated-body">
+<!-- DEFAULT THEME: fire -->
+<body class="animated-body" data-theme="fire">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -48,11 +47,14 @@
     <!-- HERO -->
     <section class="section hero">
       <div class="container hero-inner">
-        <div class="hero-copy">
+        <!-- elemental background / particle canvas (inserted) -->
+        <div id="elemental-bg" class="elemental-bg" aria-hidden="true"></div>
+
+        <div class="hero-copy" style="position:relative; z-index:1;">
           <p class="hero-kicker">Department of Electrical Engineering</p>
           <h1 class="hero-title">URJA 2k25</h1>
           <p class="lead">
-            <strong>A two-day celebration of innovation, creativity, and campus energy.</strong>
+            A two-day celebration of innovation, creativity, and campus energy.
           </p>
           <div class="hero-cta">
             <a class="btn" href="event-info.html">Explore All Event</a>
@@ -61,9 +63,9 @@
         </div>
 
         <!-- COUNTDOWN -->
-        <div class="hero-countdown">
+        <div class="hero-countdown" style="position:relative; z-index:1;">
           <h2 class="countdown-title">Countdown to Day&nbsp;1</h2>
-          <div class="countdown" data-target="Sep 19, 2025 09:30:00 GMT+0530">
+          <div class="countdown" data-target="Sep 19, 2025 09:00:00 GMT+0530">
             <!-- Days -->
             <div class="cd-unit">
               <div class="flip" data-type="days" aria-label="days" role="timer">
@@ -121,14 +123,34 @@
               <span class="cd-label">Seconds</span>
             </div>
           </div>
-          <div class="cd-note">
-            
-            Mark your calendar: 19 &amp; 20 September, 2025</div>
+
         </div>
       </div>
     </section>
 
-    <!-- SPONSORS PREVIEW -->
+    <!-- rest of page unchanged... -->
+    <section class="section">
+      <div class="container">
+        <div class="schedule-preview-card">
+          <div class="schedule-preview-content">
+            <h2 class="schedule-preview-title">Event Schedule</h2>
+            <p class="schedule-preview-subtitle">Two packed days with clear timeline view</p>
+            <a href="schedule.html" class="schedule-preview-link" aria-label="View full schedule">
+              <div class="schedule-preview-image">
+                <img src="assets/schedule.jpg" alt="URJA Schedule Preview" />
+                <div class="schedule-preview-overlay">
+                  <div class="schedule-preview-text">
+                    <span class="preview-main">View Full Schedule</span>
+                    <span class="preview-sub">Interactive timeline for both days</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section alt">
       <div class="container">
         <div class="section-head">
@@ -138,20 +160,13 @@
         <div class="sponsor-grid">
           <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
           <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <!--<div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>
-          <div class="sponsor"><img src="assets/sponsors/urja_logo.png" alt="Sponsor placeholder"></div>-->
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FLOATING NAV (always on) -->
   <nav class="floating-dock" aria-label="Quick links">
-    <a class="dock-btn active" href="index.html" aria-label="Home">🏠</a>
+    <a class="dock-btn active" href="index.html" aria-label="Home" aria-current="page">🏠</a>
     <a class="dock-btn" href="event-info.html" aria-label="Event Info">ℹ️</a>
     <a class="dock-btn" href="schedule.html" aria-label="Schedule">🗓️</a>
     <a class="dock-btn" href="gallery.html" aria-label="Gallery">🖼️</a>
@@ -160,57 +175,193 @@
   </nav>
 
   <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
-  
+
   <footer class="site-footer">
-  <div class="container">
-    <div class="footer-section made-by-section">
-      <p class="made-by-text">Made by <strong>Bhavya Tharakan</strong></p>
-    </div>
-
-
-    <div class="footer-section">
-      <h3 class="footer-title">Head of Department</h3>
-      <p class="footer-name">Dr. Hitesh K. Mehta</p>
+    <div class="container">
+      <div class="footer-section made-by-section">
+        <p class="made-by-text">Made by <strong>Bhavya Tharakan</strong></p>
       </div>
-    <div class="footer-section">
-      <h3 class="footer-title">Faculty Coordinators</h3>
-      <div class="footer-names">
-        <p class="footer-name">Faculty 1</p>
-        <p class="footer-name">Faculty 2</p>
-        <p class="footer-name">Faculty 3</p>
-        <p class="footer-name">Faculty 4</p>
-        </div>
-        </div>
 
-    <div class="footer-section footer-social">
-      <h3 class="footer-title">Follow us on Instagram!</h3>
-      <a href="https://www.instagram.com/urja2k25?igsh=MTJxajdrdmR3cDJxdA==" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
-        <div class="instagram-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#instagram-gradient)" stroke-width="2"/>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-gradient)" stroke-width="2"/>
-            <defs>
-              <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#f09433"/>
-                <stop offset="25%" style="stop-color:#e6683c"/>
-                <stop offset="50%" style="stop-color:#dc2743"/>
-                <stop offset="75%" style="stop-color:#cc2366"/>
-                <stop offset="100%" style="stop-color:#bc1888"/>
-              </linearGradient>
-            </defs>
-          </svg>
+      <div class="footer-section">
+        <h3 class="footer-title">Head of Department</h3>
+        <p class="footer-name">Dr. Hitesh K. Mehta</p>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Faculty Coordinators</h3>
+        <div class="footer-names">
+          <p class="footer-name">Faculty 1</p>
+          <p class="footer-name">Faculty 2</p>
+          <p class="footer-name">Faculty 3</p>
+          <p class="footer-name">Faculty 4</p>
         </div>
-      </a>
+      </div>
+
+      <div class="footer-section footer-social">
+        <h3 class="footer-title">Follow us on Instagram!</h3>
+        <a href="https://www.instagram.com/urja2k25?igsh=MTJxajdrdmR3cDJxdA==" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
+          <div class="instagram-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#instagram-gradient)" stroke-width="2"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+              <defs>
+                <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f09433"/>
+                  <stop offset="25%" style="stop-color:#e6683c"/>
+                  <stop offset="50%" style="stop-color:#dc2743"/>
+                  <stop offset="75%" style="stop-color:#cc2366"/>
+                  <stop offset="100%" style="stop-color:#bc1888"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> URJA - All Rights Reserved</p>
+      </div>
     </div>
+  </footer>
 
-    <div class="footer-bottom">
-      <p>© <span id="year"></span> URJA - All Rights Reserved</p>
-    </div>
-  </div>
-</footer>
-
-  
   <script src="script.js" defer></script>
+
+  <!-- Early Bird + Event Modals (unchanged) -->
+  <!-- (keep your existing modal HTML here; unchanged) -->
+<!-- Early Bird Badge Modal (add this before closing </body> tag) -->
+<div id="earlyBirdModal" class="early-bird-modal" aria-hidden="true">
+  <div class="early-bird-modal-content">
+    <div class="early-bird-modal-header">
+      <h2>🎉 Early Bird Reward!</h2>
+      <p>You clicked exactly at the right time! Only <strong>5 badges</strong> available.</p>
+    </div>
+    
+    <form id="earlyBirdForm" class="early-bird-form">
+      <div class="form-group">
+        <label for="userName">Your Name:</label>
+        <input type="text" id="userName" name="userName" required placeholder="Enter your name" maxlength="50">
+      </div>
+      
+      <div class="form-group">
+        <label for="userEmail">Email (optional):</label>
+        <input type="email" id="userEmail" name="userEmail" placeholder="your@email.com">
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn early-bird-submit">Next Step</button>
+        <button type="button" class="btn-ghost early-bird-close">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Event Selection Modal -->
+<div id="eventSelectionModal" class="early-bird-modal" aria-hidden="true">
+  <div class="early-bird-modal-content">
+    <div class="early-bird-modal-header">
+      <h2>🎯 Choose Your Free Event</h2>
+      <p>Select <strong>one event</strong> for free access with your Early Bird badge!</p>
+    </div>
+    
+    <form id="eventSelectionForm" class="early-bird-form">
+      <div class="event-selection-grid">
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="Game of Drone" required>
+          <div class="event-card">
+            <div class="event-icon">🚁</div>
+            <div class="event-name">Game of Drone</div>
+            <div class="event-fee">₹50/-</div>
+          </div>
+        </label>
+        
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="Robo Soccer" required>
+          <div class="event-card">
+            <div class="event-icon">🤖</div>
+            <div class="event-name">Robo Soccer</div>
+            <div class="event-fee">₹30/-</div>
+          </div>
+        </label>
+        
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="NFS" required>
+          <div class="event-card">
+            <div class="event-icon">🏎️</div>
+            <div class="event-name">NFS</div>
+            <div class="event-fee">₹20-40/-</div>
+          </div>
+        </label>
+        
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="Escape the Unknown" required>
+          <div class="event-card">
+            <div class="event-icon">🔍</div>
+            <div class="event-name">Escape the Unknown</div>
+            <div class="event-fee">₹20/-</div>
+          </div>
+        </label>
+        
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="Land of Ludo" required>
+          <div class="event-card">
+            <div class="event-icon">🎲</div>
+            <div class="event-name">Land of Ludo</div>
+            <div class="event-fee">₹20/-</div>
+          </div>
+        </label>
+        
+        <label class="event-option">
+          <input type="radio" name="selectedEvent" value="Meme Creation" required>
+          <div class="event-card">
+            <div class="event-icon">😂</div>
+            <div class="event-name">Meme Creation</div>
+            <div class="event-fee">₹20/-</div>
+          </div>
+        </label>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn early-bird-submit">Claim My Badge</button>
+        <button type="button" class="btn-ghost event-close">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Badge Display Modal -->
+<div id="badgeModal" class="badge-modal" aria-hidden="true">
+  <div class="badge-modal-content">
+    <div class="badge-container">
+      <div id="userBadge" class="user-badge">
+        <div class="badge-header">
+          <img src="assets/urja_logo.png" alt="URJA Logo" class="badge-logo">
+          <div class="badge-title">URJA 2K25</div>
+          <div class="badge-subtitle">Early Bird Pass</div>
+        </div>
+        <div class="badge-body">
+          <div class="badge-name" id="badgeName">Your Name</div>
+          <div class="badge-privilege">FREE ACCESS TO: <span id="badgeEvent">Selected Event</span></div>
+          <div class="badge-code" id="badgeCode">EB-2025-001</div>
+        </div>
+        <div class="badge-footer">
+          <div class="badge-date">Valid: Sep 19-20, 2025</div>
+          <div class="badge-limit">Limited Edition (1 of 5)</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="badge-actions">
+      <button id="downloadBadge" class="btn">Download Badge</button>
+      <button id="shareBadge" class="btn-ghost">Share</button>
+      <button class="btn-ghost badge-close">Close</button>
+    </div>
+    
+    <p class="badge-instructions">
+      💡 <strong>How to use:</strong> Show this badge at your selected URJA event for free entry. 
+      Screenshot this or download it to your phone!
+    </p>
+  </div>
+</div>
+
 </body>
 </html>

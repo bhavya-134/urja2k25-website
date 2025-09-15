@@ -6,163 +6,6 @@
   <title>URJA — Our Team</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Team-specific styles */
-    .team-hero {
-      text-align: center;
-      padding: 3rem 0 2rem;
-    }
-    .team-hero h1 {
-      font-family: Orbitron, Montserrat, sans-serif;
-      font-size: 2.8rem;
-      margin: 0 0 1rem;
-      background: linear-gradient(90deg, #BFFF00FF, #00FFFF);;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .team-hero p {
-      color: var(--muted);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* Filter buttons */
-    .team-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      justify-content: center;
-      margin: 2rem 0;
-    }
-    .team-filter-btn {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.6rem 1.2rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.25s ease;
-    }
-    .team-filter-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,229,255,0.15);
-    }
-    .team-filter-btn.active {
-      background: linear-gradient(90deg, var(--brand), #62fff0);
-      color: #001018;
-      box-shadow: 0 8px 24px rgba(0,229,255,0.2);
-    }
-
-    /* Team grid */
-    .team-section {
-      margin: 3rem 0;
-    }
-    .team-section-title {
-      font-family: Orbitron, Montserrat, sans-serif;
-      font-size: 1.8rem;
-      color: var(--text);
-      margin: 0 0 1.5rem;
-      text-align: center;
-    }
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-
-    /* Member cards */
-    .member-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .member-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--brand), var(--accent));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .member-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 16px 40px rgba(0,229,255,0.12);
-    }
-    .member-card:hover::before {
-      opacity: 1;
-    }
-
-    .member-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin: 0 auto 1rem;
-      background: var(--panel);
-      border: 3px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--brand);
-      font-family: Orbitron, Montserrat, sans-serif;
-    }
-    .member-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .member-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text);
-      margin: 0 0 0.5rem;
-    }
-    .member-role {
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 0 0 0.8rem;
-    }
-    .member-bio {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      font-style: italic;
-    }
-
-    /* Hidden sections */
-    .team-section.hidden {
-      display: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .team-hero h1 { font-size: 2.2rem; }
-      .team-filters { gap: 0.5rem; }
-      .team-filter-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
-      .team-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-      .member-card { padding: 1.2rem; }
-    }
-  </style>
 </head>
 <body class="animated-body">
 <header class="site-header">
@@ -197,7 +40,7 @@
   <section class="container">
     <div class="team-filters">
       <button class="team-filter-btn active" data-filter="all">All</button>
-      <button class="team-filter-btn" data-filter="core">Core Team</button>
+      <button class="team-filter-btn" data-filter="core">Core</button>
       <button class="team-filter-btn" data-filter="ir">IR Team</button>
       <button class="team-filter-btn" data-filter="web-designing">Web Designing</button>
       <button class="team-filter-btn" data-filter="designing">Designing Team</button>
@@ -274,12 +117,11 @@
             <div style="display:none;">BT</div>
           </div>
           <h3 class="member-name">Bhavya Tharakan</h3>
-          
+          <p class="member-role">Web Developer</p>
           <p class="member-bio">Building a seamless digital experience for all our users.</p>
         </article>
       </div>
     </div>
-    
     
     <div class="team-section" data-category="designing">
       <h2 class="team-section-title">Designing Team</h2>
@@ -305,7 +147,6 @@
         </article>
       </div>
     </div>
-    
     
     <div class="team-section" data-category="decoration">
       <h2 class="team-section-title">Decoration Team</h2>
@@ -364,7 +205,7 @@
   <a class="dock-btn" href="event-info.html" aria-label="Event Info">ℹ️</a>
   <a class="dock-btn" href="schedule.html" aria-label="Schedule">🗓️</a>
   <a class="dock-btn" href="gallery.html" aria-label="Gallery">🖼️</a>
-  <a class="dock-btn active" href="teams.html" aria-label="Teams">👥</a>
+  <a class="dock-btn active" href="team.html" aria-label="Teams">👥</a>
   <a class="dock-btn" href="sponsors.html" aria-label="Sponsors">⭐</a>
 </nav>
 
@@ -377,23 +218,23 @@
     </div>
 
     <div class="footer-section">
-  <h3 class="footer-title">Head of Department</h3>
-  <p class="footer-name">Dr. Hitesh K. Mehta</p>
-</div>
+      <h3 class="footer-title">Head of Department</h3>
+      <p class="footer-name">Dr. Hitesh K. Mehta</p>
+    </div>
 
-<div class="footer-section">
-  <h3 class="footer-title">Faculty Coordinators</h3>
-  <div class="footer-names">
-    <p class="footer-name">Faculty 1</p>
-    <p class="footer-name">Faculty 2</p>
-    <p class="footer-name">Faculty 3</p>
-    <p class="footer-name">Faculty 4</p>
-  </div>
-</div>
+    <div class="footer-section">
+      <h3 class="footer-title">Faculty Coordinators</h3>
+      <div class="footer-names">
+        <p class="footer-name">Faculty 1</p>
+        <p class="footer-name">Faculty 2</p>
+        <p class="footer-name">Faculty 3</p>
+        <p class="footer-name">Faculty 4</p>
+      </div>
+    </div>
 
     <div class="footer-section footer-social">
       <h3 class="footer-title">Follow us on Instagram!</h3>
-      <a href="https://instagram.com/urja_scet" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
+      <a href="https://www.instagram.com/urja2k25?igsh=MTJxajdrdmR3cDJxdA==" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
         <div class="instagram-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
@@ -406,7 +247,7 @@
                 <stop offset="50%" style="stop-color:#dc2743"/>
                 <stop offset="75%" style="stop-color:#cc2366"/>
                 <stop offset="100%" style="stop-color:#bc1888"/>
-              </linearGradient>
+              </defs>
             </defs>
           </svg>
         </div>
@@ -419,10 +260,17 @@
   </div>
 </footer>
 
-
 <script>
-// Team filtering functionality
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
+  initializeTeamPage();
+  
+  // Initialize existing script functionality
+  if (typeof initializeApp === 'function') {
+    initializeApp();
+  }
+});
+
+function initializeTeamPage() {
   const filterBtns = document.querySelectorAll('.team-filter-btn');
   const teamSections = document.querySelectorAll('.team-section');
 
@@ -444,32 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
-
-  // Set current year
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Basic navigation functionality
-  const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.getElementById('nav-menu');
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', String(!expanded));
-      navMenu.classList.toggle('show');
-    });
-  }
-
-  // Back to top
-  const backToTop = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    if (!backToTop) return;
-    if (window.scrollY > 600) backToTop.style.display = 'block';
-    else backToTop.style.display = 'none';
-  });
-  backToTop?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-});
+}
 </script>
+
+<script src="script.js" defer></script>
 </body>
 </html>
-
