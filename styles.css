@@ -840,7 +840,7 @@ a{ color:var(--brand); text-decoration:none; }
 }
 
 /* Event type colors - only tech and nontech */
-.event-indicator.tech { background: #ff6b6b; }
+.event-indicator.tech { background: #00d100; }
 .event-indicator.nontech { background: #ffe66d; }
 
 /* Event content - FIXED OVERFLOW */
@@ -1537,10 +1537,11 @@ padding: 3rem 0 2rem; }
 
 .urja-event-modal-header img {
   width: 100%;
-  aspect-ratio: 3 / 4; /* enforce 3:4 poster in modal */
-  object-fit: cover;
+  height: auto; /* Let image maintain its natural aspect ratio */
+  max-height: 400px; /* Limit maximum height */
+  object-fit: contain; /* Show full image without cropping */
   border-radius: 16px 16px 0 0;
-  max-height: 70vh;
+  background: rgba(0, 0, 0, 0.1); /* Add subtle background for letterboxing */
 }
 
 .urja-event-modal-body { padding: 1rem 1.2rem; }
