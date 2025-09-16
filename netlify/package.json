@@ -1,5 +1,8 @@
 {
   "name": "urja-gallery",
   "version": "1.0.0",
-  "description": "URJA Gallery"
+  "description": "URJA Gallery",
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  }
 }
