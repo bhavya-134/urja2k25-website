@@ -34,6 +34,11 @@
     <div class="container">
       <h1>Gallery</h1>
       <p class="lead">Explore moments captured from URJA 2K24. Select an event to view its photos.</p>
+<div class="auth-trigger" style="text-align: center; margin-top: 1rem;">
+  <button id="startAuthBtn" class="upload-btn" style="background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer;">
+    📸 Upload Photos (Event Heads)
+  </button>
+</div>
       
       <!-- Upload Button (appears only for authenticated users) -->
       <div id="uploadSection" class="upload-section" style="display: none;">
@@ -768,6 +773,14 @@ function initializeAuth() {
   uploadBtn.addEventListener('click', () => {
     authModal.style.display = 'flex';
   });
+  
+  // Add authentication trigger
+const startAuthBtn = document.getElementById('startAuthBtn');
+if (startAuthBtn) {
+  startAuthBtn.addEventListener('click', () => {
+    authModal.style.display = 'flex';
+  });
+}
   
   closeAuthModal.addEventListener('click', () => {
     authModal.style.display = 'none';
