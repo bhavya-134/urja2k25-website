@@ -1,5 +1,3 @@
-const verificationCodes = new Map();
-
 exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
     return {
@@ -10,54 +8,29 @@ exports.handler = async (event, context) => {
 
   try {
     const { email, code } = JSON.parse(event.body);
-    const storedData = verificationCodes.get(email);
     
-    if (!storedData) {
+    // DEMO MODE: Accept code 123456
+    if (code === '123456') {
       return {
-        statusCode: 400,
+        statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ error: 'No verification code found' })
+        body: JSON.stringify({ 
+          success: true,
+          authorizedEvents: ['aavishar', 'abhivyakthi', 'code-to-circuit']
+        })
       };
     }
-
-    if (Date.now() - storedData.timestamp > 10 * 60 * 1000) {
-      verificationCodes.delete(email);
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify({ error: 'Verification code expired' })
-      };
-    }
-
-    if (storedData.code !== code) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify({ error: 'Invalid verification code' })
-      };
-    }
-
-    verificationCodes.delete(email);
 
     return {
-      statusCode: 200,
+      statusCode: 400,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify({ 
-        success: true,
-        authorizedEvents: storedData.authorizedEvents 
-      })
+      body: JSON.stringify({ error: 'Invalid verification code. Use 123456 for demo' })
     };
 
   } catch (error) {

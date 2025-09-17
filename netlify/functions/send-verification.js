@@ -2,19 +2,15 @@ exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
       body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
   try {
-    const { email } = JSON.parse(event.body);
+    const { email, authorizedEvents } = JSON.parse(event.body);
     
-    // For now, just return success (we'll add real email later)
-    console.log('Verification requested for:', email);
+    // DEMO MODE: Always return success with demo code
+    console.log('Demo verification for:', email);
     
     return {
       statusCode: 200,
@@ -23,8 +19,9 @@ exports.handler = async (event, context) => {
         'Access-Control-Allow-Origin': '*'
       },
       body: JSON.stringify({ 
-        success: true, 
-        message: 'Verification system ready (demo mode)' 
+        success: true,
+        demoMode: true,
+        message: 'Demo mode: Use code 123456'
       })
     };
 
