@@ -33,18 +33,13 @@
   <section class="section page-hero">
     <div class="container">
       <h1>Gallery</h1>
-      <p class="lead">Explore moments captured from URJA 2K24. Select an event to view its photos.</p>
-<div class="auth-trigger" style="text-align: center; margin-top: 1rem;">
-  <button id="startAuthBtn" class="upload-btn" style="background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: bold; cursor: pointer;">
-    📸 Upload Photos (Event Heads)
-  </button>
-</div>
+      <p class="lead">Explore moments captured from URJA 2025. Select an event to view its photos.</p>
       
-      <!-- Upload Button (appears only for authenticated users) -->
-      <div id="uploadSection" class="upload-section" style="display: none;">
-        <button id="uploadBtn" class="upload-btn">📸 Upload Photos</button>
-        <span id="userEmail" class="user-email"></span>
-        <button id="logoutBtn" class="logout-btn">Logout</button>
+      <div class="upload-info" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 1rem; border-radius: 12px; margin-top: 1rem;">
+        <h3 style="margin: 0 0 0.5rem 0; color: #007bff;">For Event Heads:</h3>
+        <p style="margin: 0; font-size: 0.9rem; color: #666;">
+          Upload photos directly to your event's Google Drive folder. Contact admin for folder access.
+        </p>
       </div>
     </div>
   </section>
@@ -74,66 +69,6 @@
     </div>
   </section>
 </main>
-
-<!-- Authentication Modal -->
-<div id="authModal" class="modal-overlay" style="display: none;">
-  <div class="modal-content">
-    <button class="modal-close" id="closeAuthModal">✕</button>
-    <h2>Event Head Authentication</h2>
-    <p>Enter your authorized email to upload photos for this event:</p>
-    <form id="authForm">
-      <input type="email" id="emailInput" placeholder="your.email@college.edu" required>
-      <button type="submit" id="verifyBtn">Send Verification Code</button>
-    </form>
-    <div id="codeVerification" style="display: none;">
-      <p>Enter the verification code sent to your email:</p>
-      <input type="text" id="codeInput" placeholder="Enter 6-digit code" maxlength="6">
-      <button type="button" id="confirmCode">Verify Code</button>
-    </div>
-    <div id="authStatus" class="auth-status"></div>
-  </div>
-</div>
-
-<!-- Upload Modal -->
-<div id="uploadModal" class="modal-overlay" style="display: none;">
-  <div class="modal-content upload-modal">
-    <button class="modal-close" id="closeUploadModal">✕</button>
-    <h2>Upload Photos</h2>
-    <div id="eventSelector">
-      <label for="selectEvent">Select Event:</label>
-      <select id="selectEvent">
-        <option value="">Choose event...</option>
-        <option value="aavishar">Aavishar</option>
-        <option value="abhivyakthi">Abhivyakthi</option>
-        <option value="code-to-circuit">Code to Circuit</option>
-        <option value="cultural">Cultural Events</option>
-        <option value="sports">Sports</option>
-        <option value="workshops">Workshops</option>
-        <option value="competitions">Competitions</option>
-      </select>
-    </div>
-    
-    <div class="upload-area" id="uploadArea">
-      <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
-      <div class="upload-zone">
-        <div class="upload-icon">📸</div>
-        <p>Drag and drop images here or <span class="upload-link">click to select</span></p>
-        <small>Supports: JPG, PNG, WebP (Max 10MB each)</small>
-      </div>
-    </div>
-
-    <div id="uploadProgress" style="display: none;">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div id="uploadStatus">Uploading photos...</div>
-    </div>
-
-    <div id="uploadPreview" class="upload-preview"></div>
-    
-    <button id="startUpload" class="upload-submit-btn" style="display: none;">Upload Photos</button>
-  </div>
-</div>
 
 <!-- Lightbox Modal -->
 <div id="lightbox" class="lightbox-overlay" style="display: none;" role="dialog" aria-hidden="true" aria-modal="true">
@@ -217,8 +152,6 @@
 </footer>
 
 <style>
-/* Enhanced Gallery Styles */
-
 /* Event Filters */
 .event-filters {
   display: flex;
@@ -261,246 +194,11 @@
   color: #333;
 }
 
-/* Upload Section */
-.upload-section {
-  text-align: center;
-  margin-top: 1rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.upload-btn {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-.upload-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.user-email {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.logout-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.upload-modal {
-  max-width: 600px;
-}
-
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-}
-
-.modal-close:hover {
-  color: #333;
-}
-
-/* Upload Area */
-.upload-area {
-  margin: 1.5rem 0;
-}
-
-.upload-zone {
-  border: 3px dashed #ddd;
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.upload-zone:hover, .upload-zone.dragover {
-  border-color: #007bff;
-  background: #f8f9ff;
-}
-
-.upload-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.upload-link {
+.upload-info h3 {
   color: #007bff;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
-/* Upload Preview */
-.upload-preview {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
-  margin: 1rem 0;
-}
-
-.preview-item {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.preview-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.preview-remove {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: rgba(220, 53, 69, 0.9);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-/* Progress Bar */
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #e9ecef;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 1rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #007bff, #28a745);
-  transition: width 0.3s ease;
-  width: 0%;
-}
-
-/* Form Styles */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-input, select {
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-button[type="submit"], .upload-submit-btn {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button[type="submit"]:hover, .upload-submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
-}
-
-.auth-status {
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 1rem;
-  text-align: center;
-}
-
-.auth-status.success {
-  background: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.auth-status.error {
-  background: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* Enhanced Lightbox */
-.lightbox-info {
-  position: absolute;
-  bottom: -40px;
-  right: 0;
-  color: white;
-  font-size: 0.9rem;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 8px 16px;
-  border-radius: 20px;
-}
-
-/* Gallery item enhancements */
+/* Gallery items */
 .gallery-item {
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -525,49 +223,112 @@ button[type="submit"]:hover, .upload-submit-btn:hover {
   transform: scale(1.05);
 }
 
-.gallery-item::after {
-  content: attr(data-event);
+/* Lightbox styles (keeping from original) */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.lightbox-close {
   position: absolute;
-  bottom: 8px;
-  left: 8px;
-  background: rgba(0, 0, 0, 0.7);
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
   color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  font-weight: bold;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
 }
 
-.gallery-item:hover::after {
-  opacity: 1;
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .event-filters {
-    gap: 8px;
-  }
-  
-  .filter-btn {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
-  
-  .upload-section {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .modal-content {
-    padding: 1.5rem;
-    margin: 1rem;
-  }
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
 }
 
-/* Loading Animation */
+.lightbox-prev, .lightbox-next {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 16px 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  pointer-events: auto;
+}
+
+.lightbox-prev:hover, .lightbox-next:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-prev {
+  margin-left: -60px;
+}
+
+.lightbox-next {
+  margin-right: -60px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.lightbox-info {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
 @keyframes fadeInUp {
   from { 
     opacity: 0; 
@@ -583,327 +344,247 @@ button[type="submit"]:hover, .upload-submit-btn:hover {
   animation: fadeInUp 0.6s ease forwards;
 }
 
-.gallery-item:nth-child(odd) {
-  animation-delay: 0.1s;
-}
-
-.gallery-item:nth-child(even) {
-  animation-delay: 0.2s;
+@media (max-width: 768px) {
+  .event-filters {
+    gap: 8px;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  
+  .lightbox-prev {
+    margin-left: -10px;
+    font-size: 1.5rem;
+    padding: 12px 16px;
+  }
+  
+  .lightbox-next {
+    margin-right: -10px;
+    font-size: 1.5rem;
+    padding: 12px 16px;
+  }
 }
 </style>
 
 <script>
-/* Replaced gallery script: handles auth, uploads, gallery loads per-event */
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('year').textContent = new Date().getFullYear();
-  injectAuthEventSelect();     // add event selector into auth modal
-  initializeUI();
+document.addEventListener('DOMContentLoaded', function() {
   initializeGallery();
+  setupEventFilters();
+  setupLightbox();
+  
+  document.getElementById('year').textContent = new Date().getFullYear();
 });
 
-/* ---------- Helpers ---------- */
-const EVENT_KEYS = ['aavishar','abhivyakthi','code-to-circuit','cultural','sports','workshops','competitions'];
+// Event configuration with Google Drive folder IDs
 const eventConfig = {
-  'aavishar':{name:'Aavishar'},
-  'abhivyakthi':{name:'Abhivyakthi'},
-  'code-to-circuit':{name:'Code to Circuit'},
-  'cultural':{name:'Cultural Events'},
-  'sports':{name:'Sports'},
-  'workshops':{name:'Workshops'},
-  'competitions':{name:'Competitions'}
+  'aavishar': {
+    name: 'Aavishar',
+    folderId: '144f6oVBHrYWwVar7DYcLeRbxcqxP-hSu' // Replace with actual folder ID
+  },
+  'abhivyakthi': {
+    name: 'Abhivyakthi', 
+    folderId: 'YOUR_ABHIVYAKTHI_FOLDER_ID'
+  },
+  'code-to-circuit': {
+    name: 'Code to Circuit',
+    folderId: 'YOUR_CODE_TO_CIRCUIT_FOLDER_ID'
+  },
+  'cultural': {
+    name: 'Cultural Events',
+    folderId: 'YOUR_CULTURAL_FOLDER_ID'
+  },
+  'sports': {
+    name: 'Sports',
+    folderId: 'YOUR_SPORTS_FOLDER_ID'
+  },
+  'workshops': {
+    name: 'Workshops',
+    folderId: 'YOUR_WORKSHOPS_FOLDER_ID'
+  },
+  'competitions': {
+    name: 'Competitions',
+    folderId: 'YOUR_COMPETITIONS_FOLDER_ID'
+  }
 };
 
-function qs(sel){ return document.querySelector(sel); }
-function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
+let galleryImages = [];
+let currentImageIndex = 0;
 
-/* Insert event select into auth modal (so user picks which event they want to verify for) */
-function injectAuthEventSelect(){
-  const form = qs('#authForm');
-  if(!form) return;
-  // create select (if not already present)
-  if(!qs('#authEventSelect')){
-    const sel = document.createElement('select');
-    sel.id = 'authEventSelect';
-    sel.style.marginBottom = '8px';
-    sel.innerHTML = `<option value="">Select event to upload for...</option>
-      <option value="aavishar">Aavishar</option>
-      <option value="abhivyakthi">Abhivyakthi</option>
-      <option value="code-to-circuit">Code to Circuit</option>
-      <option value="cultural">Cultural Events</option>
-      <option value="sports">Sports</option>
-      <option value="workshops">Workshops</option>
-      <option value="competitions">Competitions</option>`;
-    form.insertBefore(sel, form.firstElementChild);
-  }
-}
-
-/* ---------- Initialize UI & handlers ---------- */
-function initializeUI(){
-  // Open auth modal
-  qs('#startAuthBtn').addEventListener('click', ()=> qs('#authModal').style.display='flex');
-
-  // Close auth modal
-  qs('#closeAuthModal').addEventListener('click', ()=> qs('#authModal').style.display='none');
-
-  // Auth form submit -> send verification to server
-  qs('#authForm').addEventListener('submit', handleEmailVerification);
-
-  // Confirm token verification
-  qs('#confirmCode').addEventListener('click', handleCodeVerification);
-
-  // Setup upload modal open/close
-  qs('#uploadBtn')?.addEventListener('click', ()=> qs('#uploadModal').style.display='flex');
-  qs('#closeUploadModal').addEventListener('click', ()=> qs('#uploadModal').style.display='none');
-
-  // Upload area click to trigger file chooser
-  const uploadZone = qs('.upload-zone');
-  const fileInput = qs('#fileInput');
-  uploadZone.addEventListener('click', ()=> fileInput.click());
-  fileInput.addEventListener('change', handleFilesSelected);
-
-  // Start upload button
-  qs('#startUpload').addEventListener('click', startUpload);
-
-  // Event filters buttons already wired in your HTML, just ensure handler exists
-  qsa('.filter-btn').forEach(b=>{
-    b.addEventListener('click', function(){
-      qsa('.filter-btn').forEach(x=>x.classList.remove('active'));
-      this.classList.add('active');
-      const ev = this.dataset.event;
-      displayGallery(ev);
-    });
-  });
-
-  // If user already authenticated (localStorage), restore UI
-  const saved = localStorage.getItem('urja_gallery_user');
-  if(saved){
-    try{
-      const user = JSON.parse(saved);
-      if(user && user.uploadToken && user.eventId && user.expires > Date.now()){
-        setAuthenticatedUser(user);
-      } else {
-        localStorage.removeItem('urja_gallery_user');
-      }
-    }catch(e){ localStorage.removeItem('urja_gallery_user'); }
-  }
-}
-
-/* ---------- Auth flow ---------- */
-async function handleEmailVerification(e){
-  e.preventDefault();
-  const email = qs('#emailInput').value?.trim();
-  const eventId = qs('#authEventSelect').value;
-  const status = qs('#authStatus');
-
-  if(!email){ status.innerHTML = '<div class="auth-status error">Please enter your email.</div>'; return; }
-  if(!eventId){ status.innerHTML = '<div class="auth-status error">Please select the event you want to upload for.</div>'; return; }
-
-  status.innerHTML = '<div class="auth-status">Sending verification email...</div>';
-  try{
-    const res = await fetch('/.netlify/functions/send-verification', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ email, eventId })
-    });
-    if(!res.ok){
-      const txt = await res.text();
-      status.innerHTML = `<div class="auth-status error">Send failed: ${txt}</div>`;
-      return;
-    }
-    status.innerHTML = '<div class="auth-status success">Verification sent — check your email. Paste the token below or click the link in the email.</div>';
-    qs('#codeVerification').style.display = 'block';
-    sessionStorage.setItem('verification_email', email);
-    sessionStorage.setItem('verification_event', eventId);
-  }catch(err){
-    console.error(err);
-    status.innerHTML = '<div class="auth-status error">Network error sending verification.</div>';
-  }
-}
-
-async function handleCodeVerification(){
-  const token = qs('#codeInput').value?.trim();
-  const status = qs('#authStatus');
-  if(!token){ status.innerHTML = '<div class="auth-status error">Please paste token from email.</div>'; return; }
-  status.innerHTML = '<div class="auth-status">Verifying token...</div>';
-
-  try{
-    const res = await fetch('/.netlify/functions/verify-code', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token })
-    });
-    if(!res.ok){
-      status.innerHTML = `<div class="auth-status error">Verification failed: ${await res.text()}</div>`;
-      return;
-    }
-    const js = await res.json();
-    // js.uploadToken is what we will use to upload
-    const email = sessionStorage.getItem('verification_email');
-    const eventId = sessionStorage.getItem('verification_event');
-    const userData = {
-      email,
-      eventId,
-      uploadToken: js.uploadToken,
-      expires: Date.now() + (10*60*1000) // set expiry to match upload token lifetime (10 min)
-    };
-    localStorage.setItem('urja_gallery_user', JSON.stringify(userData));
-    setAuthenticatedUser(userData);
-    status.innerHTML = '<div class="auth-status success">Verified. You can now upload photos for the chosen event.</div>';
-    qs('#authModal').style.display = 'none';
-    // Clear session storage
-    sessionStorage.removeItem('verification_email');
-    sessionStorage.removeItem('verification_event');
-  }catch(err){
-    console.error(err);
-    status.innerHTML = '<div class="auth-status error">Network error verifying token.</div>';
-  }
-}
-
-function setAuthenticatedUser(userData){
-  currentUser = userData;
-  qs('#uploadSection').style.display = 'flex';
-  qs('#userEmail').textContent = userData.email + ' — ' + (eventConfig[userData.eventId]?.name || userData.eventId);
-  // Preselect event in upload modal to the authenticated one
-  const sel = qs('#selectEvent');
-  if(sel) sel.value = userData.eventId;
-}
-
-/* ---------- Gallery loading (per event) ---------- */
-let galleryData = {}; // mapping eventId => array of publicUrl strings
-
-async function initializeGallery(){
-  // fetch galleries for all events in parallel
-  const events = EVENT_KEYS.slice();
-  const promises = events.map(e => loadEventGallery(e));
-  await Promise.all(promises);
-  // After all loaded, display default 'all'
+async function initializeGallery() {
   displayGallery('all');
 }
 
-// load gallery for ONE event (fills galleryData[eventId])
-async function loadEventGallery(eventId){
-  try{
-    const res = await fetch('/.netlify/functions/gallery-data?eventId=' + encodeURIComponent(eventId));
-    if(!res.ok){ galleryData[eventId] = []; return; }
-    const files = await res.json(); // array of file metadata
-    // convert to publicUrl list
-    galleryData[eventId] = (files || []).map(f => f.publicUrl || (`https://drive.google.com/uc?id=${f.id}`));
-  }catch(err){
-    console.error('loadEventGallery error', err);
-    galleryData[eventId] = [];
+function setupEventFilters() {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      
+      const event = this.dataset.event;
+      displayGallery(event);
+    });
+  });
+}
+
+async function displayGallery(eventFilter) {
+  const container = document.getElementById('galleryContainer');
+  const eventTitle = document.getElementById('eventTitle');
+  
+  container.innerHTML = '<div class="gallery-loading">Loading photos...</div>';
+  galleryImages = [];
+  
+  // Update title
+  if (eventFilter === 'all') {
+    eventTitle.textContent = 'All Events';
+  } else {
+    eventTitle.textContent = eventConfig[eventFilter]?.name || 'Event Photos';
+  }
+  
+  try {
+    if (eventFilter === 'all') {
+      // Load all events
+      for (const [eventKey, config] of Object.entries(eventConfig)) {
+        const photos = await loadEventPhotos(config.folderId, eventKey);
+        galleryImages.push(...photos);
+      }
+    } else {
+      // Load specific event
+      const config = eventConfig[eventFilter];
+      if (config) {
+        const photos = await loadEventPhotos(config.folderId, eventFilter);
+        galleryImages.push(...photos);
+      }
+    }
+    
+    displayImages();
+    
+  } catch (error) {
+    console.error('Gallery loading error:', error);
+    container.innerHTML = '<div class="gallery-loading">Error loading photos. Please try again later.</div>';
   }
 }
 
-/* ---------- Display gallery ---------- */
-let galleryImages = [];
-function displayGallery(filter){
-  const container = qs('#galleryContainer');
-  const eventTitle = qs('#eventTitle');
-  galleryImages = [];
-
-  if(filter === 'all'){
-    eventTitle.textContent = 'All Events';
-    Object.keys(galleryData).forEach(ev => {
-      (galleryData[ev] || []).forEach(url => galleryImages.push({src:url,event:ev}));
-    });
-  } else {
-    eventTitle.textContent = eventConfig[filter]?.name || 'Event Photos';
-    (galleryData[filter] || []).forEach(url => galleryImages.push({src:url,event:filter}));
+async function loadEventPhotos(folderId, eventKey) {
+  try {
+    const response = await fetch(`/.netlify/functions/simple-gallery-data?folderId=${folderId}`);
+    if (!response.ok) return [];
+    
+    const photos = await response.json();
+    return photos.map(photo => ({
+      src: photo.url,
+      event: eventKey,
+      alt: `${eventConfig[eventKey]?.name || eventKey} photo`
+    }));
+    
+  } catch (error) {
+    console.error(`Error loading photos for ${eventKey}:`, error);
+    return [];
   }
+}
 
-  container.innerHTML = '';
-  if(galleryImages.length === 0){
-    container.innerHTML = `<div class="gallery-loading">No images yet for "${filter}".</div>`;
+function displayImages() {
+  const container = document.getElementById('galleryContainer');
+  
+  if (galleryImages.length === 0) {
+    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!</div>';
     return;
   }
-
-  galleryImages.forEach((imgObj, index) => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'gallery-item card';
-    wrapper.style.animationDelay = `${index*0.05}s`;
-    wrapper.setAttribute('data-event', imgObj.event);
-
+  
+  container.innerHTML = '';
+  
+  galleryImages.forEach((image, index) => {
+    const galleryItem = document.createElement('div');
+    galleryItem.className = 'gallery-item card';
+    galleryItem.style.animationDelay = `${index * 0.05}s`;
+    
     const img = document.createElement('img');
-    img.src = imgObj.src;
-    img.alt = imgObj.event;
+    img.src = image.src;
+    img.alt = image.alt;
     img.loading = 'lazy';
-    img.addEventListener('error', ()=> img.src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Error');
-
-    wrapper.appendChild(img);
-    container.appendChild(wrapper);
+    
+    img.addEventListener('error', () => {
+      img.src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Loading+Error';
+    });
+    
+    galleryItem.addEventListener('click', () => openLightbox(index));
+    galleryItem.appendChild(img);
+    container.appendChild(galleryItem);
   });
 }
 
-/* ---------- File selection, preview, upload ---------- */
-let selectedFiles = [];
-
-function handleFilesSelected(e){
-  selectedFiles = Array.from(e.target.files || []);
-  const preview = qs('#uploadPreview');
-  preview.innerHTML = '';
-  if(selectedFiles.length === 0){ qs('#startUpload').style.display='none'; return; }
-  selectedFiles.forEach((f, i)=>{
-    const div = document.createElement('div');
-    div.className = 'preview-item';
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(f);
-    const remove = document.createElement('button');
-    remove.className = 'preview-remove';
-    remove.textContent = '×';
-    remove.addEventListener('click', ()=> {
-      selectedFiles.splice(i,1);
-      handleFilesSelected({ target: { files: selectedFiles } });
-    });
-    div.appendChild(img);
-    div.appendChild(remove);
-    preview.appendChild(div);
+function setupLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxClose = document.querySelector('.lightbox-close');
+  const lightboxPrev = document.querySelector('.lightbox-prev');
+  const lightboxNext = document.querySelector('.lightbox-next');
+  
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
   });
-  qs('#startUpload').style.display = 'inline-block';
-}
-
-async function startUpload(){
-  if(selectedFiles.length === 0) return alert('Select files first');
-  // get upload token from local storage
-  const user = JSON.parse(localStorage.getItem('urja_gallery_user') || 'null');
-  if(!user || !user.uploadToken) return alert('You must verify first (get verification token)');
-  const eventId = qs('#selectEvent').value || user.eventId;
-  if(!eventId) return alert('Select event in upload modal');
-
-  // FormData
-  const fd = new FormData();
-  selectedFiles.forEach((f, idx) => fd.append('file' + idx, f, f.name));
-
-  try{
-    qs('#uploadProgress').style.display = 'block';
-    qs('#uploadStatus').textContent = 'Uploading...';
-    qs('#progressFill').style.width = '20%';
-
-    const res = await fetch('/.netlify/functions/upload-photos', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + user.uploadToken },
-      body: fd
-    });
-
-    const text = await res.text();
-    if(!res.ok){
-      qs('#uploadStatus').textContent = 'Upload failed: ' + text;
-      qs('#progressFill').style.width = '0%';
-      return;
+  
+  lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
+  lightboxNext.addEventListener('click', () => navigateLightbox(1));
+  
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.style.display === 'flex') {
+      switch(e.key) {
+        case 'Escape': closeLightbox(); break;
+        case 'ArrowLeft': navigateLightbox(-1); break;
+        case 'ArrowRight': navigateLightbox(1); break;
+      }
     }
-    // response JSON
-    const json = JSON.parse(text);
-    qs('#uploadStatus').textContent = 'Upload finished: ' + ((json.uploaded || []).map(x=>x.name).join(', ') || 'done');
-    qs('#progressFill').style.width = '100%';
-    // refresh that event's gallery
-    await loadEventGallery(eventId);
-    displayGallery(eventId);
-    // clear preview and selected files
-    selectedFiles = [];
-    qs('#fileInput').value = '';
-    qs('#uploadPreview').innerHTML = '';
-    setTimeout(()=> { qs('#uploadProgress').style.display='none'; qs('#progressFill').style.width='0%'; }, 1200);
-  }catch(err){
-    console.error('startUpload error', err);
-    qs('#uploadStatus').textContent = 'Upload error';
+  });
+}
+
+function openLightbox(index) {
+  if (galleryImages.length === 0) return;
+  
+  currentImageIndex = index;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxEventName = document.getElementById('lightboxEventName');
+  
+  const currentImage = galleryImages[currentImageIndex];
+  lightboxImage.src = currentImage.src;
+  lightboxImage.alt = currentImage.alt;
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  lightboxEventName.textContent = eventConfig[currentImage.event]?.name || currentImage.event;
+  
+  lightbox.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function navigateLightbox(direction) {
+  if (galleryImages.length === 0) return;
+  
+  currentImageIndex += direction;
+  
+  if (currentImageIndex < 0) {
+    currentImageIndex = galleryImages.length - 1;
+  } else if (currentImageIndex >= galleryImages.length) {
+    currentImageIndex = 0;
   }
+  
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxEventName = document.getElementById('lightboxEventName');
+  
+  const currentImage = galleryImages[currentImageIndex];
+  lightboxImage.src = currentImage.src;
+  lightboxImage.alt = currentImage.alt;
+  lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  lightboxEventName.textContent = eventConfig[currentImage.event]?.name || currentImage.event;
 }
 </script>
 

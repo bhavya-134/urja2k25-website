@@ -1,74 +1,58 @@
-// netlify/functions/gallery-data.js
+// netlify/functions/simple-gallery-data.js
 const { google } = require('googleapis');
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
-    // 1. Which event?
-    const params = event.queryStringParameters || {};
-    const eventId = params.eventId;
-    if (!eventId) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing eventId' }),
-      };
-    }
-
-    // 2. Map eventId -> folder ID from env
-    const folderMap = {
-      'aavishar': process.env.AAVISHAR_FOLDER_ID,
-      'abhivyakthi': process.env.ABHIVYAKTHI_FOLDER_ID,
-      'code-to-circuit': process.env.CODE_TO_CIRCUIT_FOLDER_ID,
-      'cultural': process.env.CULTURAL_FOLDER_ID,
-      'sports': process.env.SPORTS_FOLDER_ID,
-      'workshops': process.env.WORKSHOPS_FOLDER_ID,
-      'competitions': process.env.COMPETITIONS_FOLDER_ID,
-    };
-
-    const folderId = folderMap[eventId];
+    const { folderId } = event.queryStringParameters || {};
+    
     if (!folderId) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid eventId' }),
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ error: 'Missing folderId parameter' })
       };
     }
 
-    // 3. Google auth
+    // Google Drive API setup
     const auth = new google.auth.JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
-      key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+      key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+      scopes: ['https://www.googleapis.com/auth/drive.readonly']
     });
+
     const drive = google.drive({ version: 'v3', auth });
 
-    // 4. List files in folder
-    const res = await drive.files.list({
-      q: `'${folderId}' in parents and trashed = false`,
+    // Get files from the folder
+    const response = await drive.files.list({
+      q: `'${folderId}' in parents and trashed = false and mimeType contains 'image/'`,
       fields: 'files(id, name, mimeType)',
+      orderBy: 'createdTime desc'
     });
 
-    const files = res.data.files || [];
-
-    // 5. Build public URLs
-    const urls = files.map(f => ({
-      id: f.id,
-      name: f.name,
-      publicUrl: `https://drive.google.com/uc?id=${f.id}`,
+    const files = response.data.files || [];
+    
+    // Convert to public URLs
+    const photos = files.map(file => ({
+      id: file.id,
+      name: file.name,
+      url: `https://drive.google.com/uc?id=${file.id}`
     }));
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
+      headers: { 
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(urls),
+      body: JSON.stringify(photos)
     };
-  } catch (err) {
-    console.error('gallery-data error', err);
+
+  } catch (error) {
+    console.error('Gallery data error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Failed to load photos' })
     };
   }
 };

@@ -1,10 +1,7 @@
 {
-  "name": "urja-functions",
+  "name": "urja-gallery",
   "version": "1.0.0",
   "dependencies": {
-    "googleapis": "^126.0.1",
-    "nodemailer": "^6.9.9",
-    "busboy": "^1.6.0",
-    "jsonwebtoken": "^9.0.2"
+    "googleapis": "^126.0.1"
   }
 }
