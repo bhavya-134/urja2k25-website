@@ -1,46 +1,34 @@
-exports.handler = async (event, context) => {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
-  }
+// verify-code.js
+const jwt = require('jsonwebtoken');
 
+exports.handler = async (event) => {
   try {
-    const { email, code } = JSON.parse(event.body);
-    
-    // DEMO MODE: Accept code 123456
-    if (code === '123456') {
-      return {
-        statusCode: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify({ 
-          success: true,
-          authorizedEvents: ['aavishar', 'abhivyakthi', 'code-to-circuit']
-        })
-      };
+    if (event.httpMethod !== 'POST') {
+      return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
     }
-
+    
+    const { token } = JSON.parse(event.body || '{}');
+    if (!token) return { statusCode: 400, body: JSON.stringify({ error: 'Missing token' }) };
+    
+    // Verify the token signed by send-verification
+    let payload;
+    try {
+      payload = jwt.verify(token, process.env.VERIFICATION_SECRET);
+    } catch (err) {
+      console.error('verify-code jwt error', err);
+      return { statusCode: 401, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: 'Invalid or expired token' }) };
+    }
+    
+    // Create a short-lived upload token (10 minutes) used to authorize uploads
+    const uploadToken = jwt.sign({ email: payload.email, eventId: payload.eventId }, process.env.VERIFICATION_SECRET, { expiresIn: '10m' });
+    
     return {
-      statusCode: 400,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify({ error: 'Invalid verification code. Use 123456 for demo' })
+      statusCode: 200,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ uploadToken, email: payload.email, eventId: payload.eventId })
     };
-
-  } catch (error) {
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      },
-      body: JSON.stringify({ error: 'Verification failed' })
-    };
+  } catch (err) {
+    console.error('verify-code error', err);
+    return { statusCode: 500, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: 'Server error' }) };
   }
 };
