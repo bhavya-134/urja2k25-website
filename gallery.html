@@ -652,8 +652,8 @@ const eventConfig = {
 // Initialize Gallery
 async function initializeGallery() {
   try {
-    // Load gallery data from enhanced JSON structure
-    const response = await fetch('/api/gallery-data', { 
+    // Load gallery data from Netlify function
+    const response = await fetch('/.netlify/functions/gallery-data', { 
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
