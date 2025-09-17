@@ -593,366 +593,318 @@ button[type="submit"]:hover, .upload-submit-btn:hover {
 </style>
 
 <script>
-// Simplified Gallery System - Fixed Version
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Gallery script loaded');
-  initializeGallery();
-  initializeAuth();
-  
-  // Set current year
+/* Replaced gallery script: handles auth, uploads, gallery loads per-event */
+document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
+  injectAuthEventSelect();     // add event selector into auth modal
+  initializeUI();
+  initializeGallery();
 });
 
-let galleryData = {};
-let currentEvent = 'all';
-let currentUser = null;
-let currentImageIndex = 0;
-let galleryImages = [];
-
-// Event configuration
+/* ---------- Helpers ---------- */
+const EVENT_KEYS = ['aavishar','abhivyakthi','code-to-circuit','cultural','sports','workshops','competitions'];
 const eventConfig = {
-  'aavishar': {
-    name: 'Aavishar',
-    description: 'Cultural performances and showcases',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'aavishar@college.edu']
-  },
-  'abhivyakthi': {
-    name: 'Abhivyakthi',
-    description: 'Literary and art exhibitions',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'abhivyakthi@college.edu']
-  },
-  'code-to-circuit': {
-    name: 'Code to Circuit',
-    description: 'Technical competitions and hackathons',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'tech@college.edu']
-  },
-  'cultural': {
-    name: 'Cultural Events',
-    description: 'Dance, music, and cultural activities',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'cultural@college.edu']
-  },
-  'sports': {
-    name: 'Sports',
-    description: 'Athletic competitions and tournaments',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'sports@college.edu']
-  },
-  'workshops': {
-    name: 'Workshops',
-    description: 'Educational workshops and seminars',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'workshops@college.edu']
-  },
-  'competitions': {
-    name: 'Competitions',
-    description: 'Various competitive events',
-    authorizedEmails: ['bhavyatharakan@gmail.com', 'competitions@college.edu']
-  }
+  'aavishar':{name:'Aavishar'},
+  'abhivyakthi':{name:'Abhivyakthi'},
+  'code-to-circuit':{name:'Code to Circuit'},
+  'cultural':{name:'Cultural Events'},
+  'sports':{name:'Sports'},
+  'workshops':{name:'Workshops'},
+  'competitions':{name:'Competitions'}
 };
 
-// Initialize Gallery - Simplified
-async function initializeGallery() {
-  console.log('Initializing gallery...');
-  const container = document.getElementById('galleryContainer');
-  container.innerHTML = '<div class="gallery-loading">Loading gallery...</div>';
-  
-  try {
-    console.log('Fetching gallery data...');
-    const response = await fetch('/.netlify/functions/gallery-data');
-    console.log('Response status:', response.status);
-    
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Gallery data received:', data);
-      galleryData = data;
-    } else {
-      console.error('API error:', response.status);
-      galleryData = getFallbackData();
-    }
-  } catch (error) {
-    console.error('Fetch error:', error);
-    galleryData = getFallbackData();
+function qs(sel){ return document.querySelector(sel); }
+function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
+
+/* Insert event select into auth modal (so user picks which event they want to verify for) */
+function injectAuthEventSelect(){
+  const form = qs('#authForm');
+  if(!form) return;
+  // create select (if not already present)
+  if(!qs('#authEventSelect')){
+    const sel = document.createElement('select');
+    sel.id = 'authEventSelect';
+    sel.style.marginBottom = '8px';
+    sel.innerHTML = `<option value="">Select event to upload for...</option>
+      <option value="aavishar">Aavishar</option>
+      <option value="abhivyakthi">Abhivyakthi</option>
+      <option value="code-to-circuit">Code to Circuit</option>
+      <option value="cultural">Cultural Events</option>
+      <option value="sports">Sports</option>
+      <option value="workshops">Workshops</option>
+      <option value="competitions">Competitions</option>`;
+    form.insertBefore(sel, form.firstElementChild);
   }
-  
-  console.log('Final gallery data:', galleryData);
-  setupEventFilters();
-  displayGallery('all');
 }
 
-// Fallback data if API fails
-function getFallbackData() {
-  return {
-    'aavishar': ['https://via.placeholder.com/400x300/ff6b6b/ffffff?text=Aavishar+Demo'],
-    'code-to-circuit': [
-      'https://via.placeholder.com/400x300/45b7d1/ffffff?text=Code+Circuit+1',
-      'https://via.placeholder.com/400x300/45b7d1/ffffff?text=Code+Circuit+2'
-    ],
-    'abhivyakthi': ['https://via.placeholder.com/400x300/4ecdc4/ffffff?text=Abhivyakthi+Demo']
-  };
-}
+/* ---------- Initialize UI & handlers ---------- */
+function initializeUI(){
+  // Open auth modal
+  qs('#startAuthBtn').addEventListener('click', ()=> qs('#authModal').style.display='flex');
 
-// Setup event filter buttons
-function setupEventFilters() {
-  console.log('Setting up event filters...');
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      console.log('Filter clicked:', this.dataset.event);
-      
-      // Remove active class from all buttons
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
+  // Close auth modal
+  qs('#closeAuthModal').addEventListener('click', ()=> qs('#authModal').style.display='none');
+
+  // Auth form submit -> send verification to server
+  qs('#authForm').addEventListener('submit', handleEmailVerification);
+
+  // Confirm token verification
+  qs('#confirmCode').addEventListener('click', handleCodeVerification);
+
+  // Setup upload modal open/close
+  qs('#uploadBtn')?.addEventListener('click', ()=> qs('#uploadModal').style.display='flex');
+  qs('#closeUploadModal').addEventListener('click', ()=> qs('#uploadModal').style.display='none');
+
+  // Upload area click to trigger file chooser
+  const uploadZone = qs('.upload-zone');
+  const fileInput = qs('#fileInput');
+  uploadZone.addEventListener('click', ()=> fileInput.click());
+  fileInput.addEventListener('change', handleFilesSelected);
+
+  // Start upload button
+  qs('#startUpload').addEventListener('click', startUpload);
+
+  // Event filters buttons already wired in your HTML, just ensure handler exists
+  qsa('.filter-btn').forEach(b=>{
+    b.addEventListener('click', function(){
+      qsa('.filter-btn').forEach(x=>x.classList.remove('active'));
       this.classList.add('active');
-      
-      const event = this.dataset.event;
-      currentEvent = event;
-      displayGallery(event);
+      const ev = this.dataset.event;
+      displayGallery(ev);
     });
   });
-}
 
-// Display gallery for specific event - Simplified
-function displayGallery(eventFilter) {
-  console.log('Displaying gallery for event:', eventFilter);
-  console.log('Available data:', Object.keys(galleryData));
-  
-  const container = document.getElementById('galleryContainer');
-  const eventTitle = document.getElementById('eventTitle');
-  
-  // Clear container
-  container.innerHTML = '';
-  galleryImages = [];
-  
-  // Update title
-  if (eventFilter === 'all') {
-    eventTitle.textContent = 'All Events';
-  } else {
-    eventTitle.textContent = eventConfig[eventFilter]?.name || 'Event Photos';
-  }
-  
-  // Collect images
-  let totalImages = 0;
-  Object.keys(galleryData).forEach(event => {
-    if (eventFilter === 'all' || eventFilter === event) {
-      if (galleryData[event] && Array.isArray(galleryData[event])) {
-        galleryData[event].forEach((imageSrc, index) => {
-          galleryImages.push({
-            src: imageSrc,
-            event: event,
-            alt: `${eventConfig[event]?.name || event} photo ${index + 1}`
-          });
-          totalImages++;
-        });
-      }
-    }
-  });
-  
-  console.log(`Found ${totalImages} images for filter: ${eventFilter}`);
-  console.log('Gallery images:', galleryImages);
-  
-  // Show images or no photos message
-  if (galleryImages.length === 0) {
-    container.innerHTML = `
-      <div class="gallery-loading">
-        <p><strong>Debug Info:</strong></p>
-        <p>Event Filter: ${eventFilter}</p>
-        <p>Available Events: ${Object.keys(galleryData).join(', ')}</p>
-        <p>Total Images Found: ${totalImages}</p>
-        <p>Gallery Data: ${JSON.stringify(galleryData).substring(0, 200)}...</p>
-      </div>
-    `;
-    return;
-  }
-  
-  // Create gallery items
-  galleryImages.forEach((image, index) => {
-    const galleryItem = document.createElement('div');
-    galleryItem.className = 'gallery-item card';
-    galleryItem.style.animationDelay = `${index * 0.1}s`;
-    
-    const img = document.createElement('img');
-    img.src = image.src;
-    img.alt = image.alt;
-    img.loading = 'lazy';
-    img.style.width = '100%';
-    img.style.height = '250px';
-    img.style.objectFit = 'cover';
-    img.style.borderRadius = '8px';
-    
-    img.addEventListener('error', function() {
-      console.error('Image failed to load:', image.src);
-      this.src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Error';
-    });
-    
-    img.addEventListener('load', function() {
-      console.log('Image loaded successfully:', image.src);
-    });
-    
-    galleryItem.addEventListener('click', () => {
-      console.log('Image clicked:', index);
-      // You can add lightbox functionality here later
-    });
-    
-    galleryItem.appendChild(img);
-    container.appendChild(galleryItem);
-  });
-  
-  console.log(`Created ${galleryImages.length} gallery items`);
-}
-
-// Authentication System - Simplified
-function initializeAuth() {
-  // Check for existing session
-  const savedUser = localStorage.getItem('urja_gallery_user');
-  if (savedUser) {
-    try {
-      const userData = JSON.parse(savedUser);
-      if (userData.expires > Date.now()) {
-        setAuthenticatedUser(userData);
+  // If user already authenticated (localStorage), restore UI
+  const saved = localStorage.getItem('urja_gallery_user');
+  if(saved){
+    try{
+      const user = JSON.parse(saved);
+      if(user && user.uploadToken && user.eventId && user.expires > Date.now()){
+        setAuthenticatedUser(user);
       } else {
         localStorage.removeItem('urja_gallery_user');
       }
-    } catch (e) {
-      localStorage.removeItem('urja_gallery_user');
-    }
-  }
-  
-  // Setup auth button click
-  const startAuthBtn = document.getElementById('startAuthBtn');
-  if (startAuthBtn) {
-    startAuthBtn.addEventListener('click', () => {
-      console.log('Start auth clicked');
-      document.getElementById('authModal').style.display = 'flex';
-    });
-  }
-  
-  // Setup modal close
-  const closeAuthModal = document.getElementById('closeAuthModal');
-  if (closeAuthModal) {
-    closeAuthModal.addEventListener('click', () => {
-      document.getElementById('authModal').style.display = 'none';
-    });
-  }
-  
-  // Setup auth form
-  const authForm = document.getElementById('authForm');
-  if (authForm) {
-    authForm.addEventListener('submit', handleEmailVerification);
-  }
-  
-  // Setup logout
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('urja_gallery_user');
-      currentUser = null;
-      document.getElementById('uploadSection').style.display = 'none';
-    });
-  }
-  
-  // Setup code verification
-  const confirmCodeBtn = document.getElementById('confirmCode');
-  if (confirmCodeBtn) {
-    confirmCodeBtn.addEventListener('click', handleCodeVerification);
+    }catch(e){ localStorage.removeItem('urja_gallery_user'); }
   }
 }
 
-// Handle email verification
-async function handleEmailVerification(e) {
+/* ---------- Auth flow ---------- */
+async function handleEmailVerification(e){
   e.preventDefault();
-  
-  const email = document.getElementById('emailInput').value;
-  const statusDiv = document.getElementById('authStatus');
-  const verifyBtn = document.getElementById('verifyBtn');
-  
-  // Check authorization
-  const authorizedEvents = [];
-  Object.keys(eventConfig).forEach(event => {
-    if (eventConfig[event].authorizedEmails.includes(email)) {
-      authorizedEvents.push(event);
-    }
-  });
-  
-  if (authorizedEvents.length === 0) {
-    statusDiv.innerHTML = '<div class="auth-status error">Email not authorized for any events</div>';
-    return;
-  }
-  
-  verifyBtn.disabled = true;
-  verifyBtn.textContent = 'Sending...';
-  
-  try {
-    const response = await fetch('/.netlify/functions/send-verification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, authorizedEvents })
+  const email = qs('#emailInput').value?.trim();
+  const eventId = qs('#authEventSelect').value;
+  const status = qs('#authStatus');
+
+  if(!email){ status.innerHTML = '<div class="auth-status error">Please enter your email.</div>'; return; }
+  if(!eventId){ status.innerHTML = '<div class="auth-status error">Please select the event you want to upload for.</div>'; return; }
+
+  status.innerHTML = '<div class="auth-status">Sending verification email...</div>';
+  try{
+    const res = await fetch('/.netlify/functions/send-verification', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, eventId })
     });
-    
-    if (response.ok) {
-      document.getElementById('codeVerification').style.display = 'block';
-      statusDiv.innerHTML = '<div class="auth-status success">Demo mode: Use code 123456</div>';
-      
-      sessionStorage.setItem('verification_email', email);
-      sessionStorage.setItem('authorized_events', JSON.stringify(authorizedEvents));
-    } else {
-      statusDiv.innerHTML = '<div class="auth-status error">Failed to send verification code</div>';
+    if(!res.ok){
+      const txt = await res.text();
+      status.innerHTML = `<div class="auth-status error">Send failed: ${txt}</div>`;
+      return;
     }
-  } catch (error) {
-    statusDiv.innerHTML = '<div class="auth-status error">Network error. Please try again.</div>';
+    status.innerHTML = '<div class="auth-status success">Verification sent — check your email. Paste the token below or click the link in the email.</div>';
+    qs('#codeVerification').style.display = 'block';
+    sessionStorage.setItem('verification_email', email);
+    sessionStorage.setItem('verification_event', eventId);
+  }catch(err){
+    console.error(err);
+    status.innerHTML = '<div class="auth-status error">Network error sending verification.</div>';
   }
-  
-  verifyBtn.disabled = false;
-  verifyBtn.textContent = 'Send Verification Code';
 }
 
-// Handle code verification
-async function handleCodeVerification() {
-  const code = document.getElementById('codeInput').value;
-  const email = sessionStorage.getItem('verification_email');
-  const authorizedEvents = JSON.parse(sessionStorage.getItem('authorized_events'));
-  const statusDiv = document.getElementById('authStatus');
-  
-  if (code === '123456') {
+async function handleCodeVerification(){
+  const token = qs('#codeInput').value?.trim();
+  const status = qs('#authStatus');
+  if(!token){ status.innerHTML = '<div class="auth-status error">Please paste token from email.</div>'; return; }
+  status.innerHTML = '<div class="auth-status">Verifying token...</div>';
+
+  try{
+    const res = await fetch('/.netlify/functions/verify-code', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token })
+    });
+    if(!res.ok){
+      status.innerHTML = `<div class="auth-status error">Verification failed: ${await res.text()}</div>`;
+      return;
+    }
+    const js = await res.json();
+    // js.uploadToken is what we will use to upload
+    const email = sessionStorage.getItem('verification_email');
+    const eventId = sessionStorage.getItem('verification_event');
     const userData = {
       email,
-      authorizedEvents,
-      expires: Date.now() + (24 * 60 * 60 * 1000)
+      eventId,
+      uploadToken: js.uploadToken,
+      expires: Date.now() + (10*60*1000) // set expiry to match upload token lifetime (10 min)
     };
-    
     localStorage.setItem('urja_gallery_user', JSON.stringify(userData));
     setAuthenticatedUser(userData);
-    
-    document.getElementById('authModal').style.display = 'none';
-    
+    status.innerHTML = '<div class="auth-status success">Verified. You can now upload photos for the chosen event.</div>';
+    qs('#authModal').style.display = 'none';
+    // Clear session storage
     sessionStorage.removeItem('verification_email');
-    sessionStorage.removeItem('authorized_events');
-  } else {
-    statusDiv.innerHTML = '<div class="auth-status error">Invalid code. Use 123456 for demo</div>';
+    sessionStorage.removeItem('verification_event');
+  }catch(err){
+    console.error(err);
+    status.innerHTML = '<div class="auth-status error">Network error verifying token.</div>';
   }
 }
 
-// Set authenticated user
-function setAuthenticatedUser(userData) {
+function setAuthenticatedUser(userData){
   currentUser = userData;
-  document.getElementById('uploadSection').style.display = 'flex';
-  document.getElementById('userEmail').textContent = userData.email;
+  qs('#uploadSection').style.display = 'flex';
+  qs('#userEmail').textContent = userData.email + ' — ' + (eventConfig[userData.eventId]?.name || userData.eventId);
+  // Preselect event in upload modal to the authenticated one
+  const sel = qs('#selectEvent');
+  if(sel) sel.value = userData.eventId;
 }
 
-// Back to top functionality
-document.addEventListener('DOMContentLoaded', function() {
-  const backToTop = document.getElementById('backToTop');
-  
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTop.style.display = 'block';
-    } else {
-      backToTop.style.display = 'none';
+/* ---------- Gallery loading (per event) ---------- */
+let galleryData = {}; // mapping eventId => array of publicUrl strings
+
+async function initializeGallery(){
+  // fetch galleries for all events in parallel
+  const events = EVENT_KEYS.slice();
+  const promises = events.map(e => loadEventGallery(e));
+  await Promise.all(promises);
+  // After all loaded, display default 'all'
+  displayGallery('all');
+}
+
+// load gallery for ONE event (fills galleryData[eventId])
+async function loadEventGallery(eventId){
+  try{
+    const res = await fetch('/.netlify/functions/gallery-data?eventId=' + encodeURIComponent(eventId));
+    if(!res.ok){ galleryData[eventId] = []; return; }
+    const files = await res.json(); // array of file metadata
+    // convert to publicUrl list
+    galleryData[eventId] = (files || []).map(f => f.publicUrl || (`https://drive.google.com/uc?id=${f.id}`));
+  }catch(err){
+    console.error('loadEventGallery error', err);
+    galleryData[eventId] = [];
+  }
+}
+
+/* ---------- Display gallery ---------- */
+let galleryImages = [];
+function displayGallery(filter){
+  const container = qs('#galleryContainer');
+  const eventTitle = qs('#eventTitle');
+  galleryImages = [];
+
+  if(filter === 'all'){
+    eventTitle.textContent = 'All Events';
+    Object.keys(galleryData).forEach(ev => {
+      (galleryData[ev] || []).forEach(url => galleryImages.push({src:url,event:ev}));
+    });
+  } else {
+    eventTitle.textContent = eventConfig[filter]?.name || 'Event Photos';
+    (galleryData[filter] || []).forEach(url => galleryImages.push({src:url,event:filter}));
+  }
+
+  container.innerHTML = '';
+  if(galleryImages.length === 0){
+    container.innerHTML = `<div class="gallery-loading">No images yet for "${filter}".</div>`;
+    return;
+  }
+
+  galleryImages.forEach((imgObj, index) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'gallery-item card';
+    wrapper.style.animationDelay = `${index*0.05}s`;
+    wrapper.setAttribute('data-event', imgObj.event);
+
+    const img = document.createElement('img');
+    img.src = imgObj.src;
+    img.alt = imgObj.event;
+    img.loading = 'lazy';
+    img.addEventListener('error', ()=> img.src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Error');
+
+    wrapper.appendChild(img);
+    container.appendChild(wrapper);
+  });
+}
+
+/* ---------- File selection, preview, upload ---------- */
+let selectedFiles = [];
+
+function handleFilesSelected(e){
+  selectedFiles = Array.from(e.target.files || []);
+  const preview = qs('#uploadPreview');
+  preview.innerHTML = '';
+  if(selectedFiles.length === 0){ qs('#startUpload').style.display='none'; return; }
+  selectedFiles.forEach((f, i)=>{
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(f);
+    const remove = document.createElement('button');
+    remove.className = 'preview-remove';
+    remove.textContent = '×';
+    remove.addEventListener('click', ()=> {
+      selectedFiles.splice(i,1);
+      handleFilesSelected({ target: { files: selectedFiles } });
+    });
+    div.appendChild(img);
+    div.appendChild(remove);
+    preview.appendChild(div);
+  });
+  qs('#startUpload').style.display = 'inline-block';
+}
+
+async function startUpload(){
+  if(selectedFiles.length === 0) return alert('Select files first');
+  // get upload token from local storage
+  const user = JSON.parse(localStorage.getItem('urja_gallery_user') || 'null');
+  if(!user || !user.uploadToken) return alert('You must verify first (get verification token)');
+  const eventId = qs('#selectEvent').value || user.eventId;
+  if(!eventId) return alert('Select event in upload modal');
+
+  // FormData
+  const fd = new FormData();
+  selectedFiles.forEach((f, idx) => fd.append('file' + idx, f, f.name));
+
+  try{
+    qs('#uploadProgress').style.display = 'block';
+    qs('#uploadStatus').textContent = 'Uploading...';
+    qs('#progressFill').style.width = '20%';
+
+    const res = await fetch('/.netlify/functions/upload-photos', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + user.uploadToken },
+      body: fd
+    });
+
+    const text = await res.text();
+    if(!res.ok){
+      qs('#uploadStatus').textContent = 'Upload failed: ' + text;
+      qs('#progressFill').style.width = '0%';
+      return;
     }
-  });
-  
-  backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
+    // response JSON
+    const json = JSON.parse(text);
+    qs('#uploadStatus').textContent = 'Upload finished: ' + ((json.uploaded || []).map(x=>x.name).join(', ') || 'done');
+    qs('#progressFill').style.width = '100%';
+    // refresh that event's gallery
+    await loadEventGallery(eventId);
+    displayGallery(eventId);
+    // clear preview and selected files
+    selectedFiles = [];
+    qs('#fileInput').value = '';
+    qs('#uploadPreview').innerHTML = '';
+    setTimeout(()=> { qs('#uploadProgress').style.display='none'; qs('#progressFill').style.width='0%'; }, 1200);
+  }catch(err){
+    console.error('startUpload error', err);
+    qs('#uploadStatus').textContent = 'Upload error';
+  }
+}
 </script>
 
 <script src="script.js" defer></script>
