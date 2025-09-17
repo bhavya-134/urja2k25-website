@@ -1,8 +1,8 @@
 {
-  "name": "urja-gallery",
+  "name": "urja-functions",
   "version": "1.0.0",
-  "description": "URJA Gallery",
   "dependencies": {
-    "nodemailer": "^6.9.7"
+    "googleapis": "^126.0.1",
+    "nodemailer": "^6.9.9"
   }
 }
