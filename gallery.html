@@ -724,9 +724,15 @@ function displayGallery(eventFilter) {
   
   // Create gallery items
   if (galleryImages.length === 0) {
-    container.innerHTML = '<div class="gallery-loading">No photos available for this event yet.</div>';
-    return;
-  }
+  container.innerHTML = `<div class="gallery-loading">
+    <p>Debug Info:</p>
+    <p>Event Filter: ${eventFilter}</p>
+    <p>Gallery Data Keys: ${Object.keys(galleryData).join(', ')}</p>
+    <p>Total Images Found: ${galleryImages.length}</p>
+    <p>API Status: ${galleryData ? 'Data Loaded' : 'No Data'}</p>
+  </div>`;
+  return;
+}
   
   galleryImages.forEach((image, index) => {
     const galleryItem = document.createElement('div');
