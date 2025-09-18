@@ -59,7 +59,7 @@ exports.handler = async (event) => {
       webViewLink: f.webViewLink,
       thumbnailLink: f.thumbnailLink,
       // direct view URL
-      url: `https://drive.google.com/uc?export=view&id=${f.id}`
+      url: `https://drive.google.com/uc?export=view&id=${file.id}`
     }));
 
     return {
