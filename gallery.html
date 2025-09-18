@@ -217,8 +217,8 @@
 
 .lightbox-content {
   position: relative;
-  width: calc(100vw - 200px);  /* Full width minus space for arrows */
-  height: 90vh;
+  max-width: 80vw;
+  max-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,6 +232,14 @@
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-prev {
+  margin-left: -90px;
+}
+
+.lightbox-next {
+  margin-right: -90px;
 }
 
 .lightbox-close {

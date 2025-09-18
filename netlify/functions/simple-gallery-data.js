@@ -37,10 +37,8 @@ exports.handler = async (event) => {
   id: f.id,
   name: f.name,
   mimeType: f.mimeType,
-  // Use full-resolution direct download URL instead of thumbnails
-  url: `https://drive.google.com/uc?export=download&id=${f.id}`,
-  // Backup thumbnail for cases where direct download fails
-  thumbnailUrl: f.thumbnailLink || `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`
+  // Use larger thumbnail size - w800 instead of w400
+  url: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`
 }));
 
     return {
