@@ -34,12 +34,14 @@ exports.handler = async (event) => {
     const files = response.data.files || [];
 
     const photos = files.map(f => ({
-      id: f.id,
-      name: f.name,
-      mimeType: f.mimeType,
-      // Use thumbnail URL - much more reliable
-      url: f.thumbnailLink || `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`
-    }));
+  id: f.id,
+  name: f.name,
+  mimeType: f.mimeType,
+  // Use full-resolution direct download URL instead of thumbnails
+  url: `https://drive.google.com/uc?export=download&id=${f.id}`,
+  // Backup thumbnail for cases where direct download fails
+  thumbnailUrl: f.thumbnailLink || `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`
+}));
 
     return {
       statusCode: 200,
