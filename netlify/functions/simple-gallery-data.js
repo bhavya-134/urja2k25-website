@@ -1,10 +1,20 @@
 // netlify/functions/simple-gallery-data.js
 const { google } = require('googleapis');
 
+function driveClient() {
+  const key = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
+  const auth = new google.auth.JWT(
+    process.env.GOOGLE_CLIENT_EMAIL,
+    null,
+    key,
+    ['https://www.googleapis.com/auth/drive.readonly']
+  );
+  return google.drive({ version: 'v3', auth });
+}
+
 exports.handler = async (event) => {
   try {
     const { folderId } = event.queryStringParameters || {};
-    
     if (!folderId) {
       return {
         statusCode: 400,
@@ -13,58 +23,43 @@ exports.handler = async (event) => {
       };
     }
 
-    const auth = new google.auth.JWT({
-      email: process.env.GOOGLE_CLIENT_EMAIL,
-      key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-      scopes: ['https://www.googleapis.com/auth/drive']
-    });
-
-    const drive = google.drive({ version: 'v3', auth });
+    const drive = driveClient();
 
     const response = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false and mimeType contains 'image/'`,
-      fields: 'files(id, name, mimeType)',
-      orderBy: 'createdTime desc'
+      fields: 'files(id, name, mimeType, webViewLink, webContentLink, thumbnailLink)',
+      orderBy: 'createdTime desc',
+      pageSize: 1000
     });
 
     const files = response.data.files || [];
-    
-    // Alternative version that gets file content directly
-    const photos = [];
-    for (const file of files) {
-      try {
-        // Make sure file is public
-        await drive.permissions.create({
-          fileId: file.id,
-          resource: { role: 'reader', type: 'anyone' }
-        });
-        
-        // Use direct content URL
-        photos.push({
-          id: file.id,
-          name: file.name,
-          url: `https://lh3.googleusercontent.com/d/${file.id}=w800-h600`
-        });
-      } catch (err) {
-        console.log(`Error with file ${file.id}: ${err.message}`);
-      }
-    }
+
+    const photos = files.map(f => ({
+      id: f.id,
+      name: f.name,
+      mimeType: f.mimeType,
+      // standard direct view url that works if file/folder is shared publicly
+      url: `https://drive.google.com/uc?export=view&id=${f.id}`,
+      webViewLink: f.webViewLink || null,
+      thumbnailLink: f.thumbnailLink || null
+    }));
 
     return {
       statusCode: 200,
       headers: { 
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
       },
       body: JSON.stringify(photos)
     };
 
   } catch (error) {
-    console.error('Gallery data error:', error);
+    console.error('simple-gallery-data error:', error && (error.message || error));
     return {
       statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Failed to load photos' })
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Failed to load photos', details: error && error.message })
     };
   }
 };
