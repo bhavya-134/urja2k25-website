@@ -6,12 +6,6 @@
   <title>URJA — Gallery</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* minimal debug styles */
-    #debugJson { background:#111;color:#0f0;padding:8px;margin:10px 0;white-space:pre-wrap;word-break:break-word; }
-    .debug-error { background:#400;color:#fff;padding:8px;margin:10px 0; }
-    .debug-note { background:#eef;padding:8px;margin:10px 0; color:#333; border-radius:6px; }
-  </style>
 </head>
 <body class="animated-body">
 <header class="site-header">
@@ -57,7 +51,7 @@
         <button class="filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
         <button class="filter-btn" data-event="code-to-circuit">Code to Circuit</button>
         <button class="filter-btn" data-event="bidwars">Bidwars</button>
-        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown </button>
+        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
         <button class="filter-btn" data-event="game-of-drone">Game of Drone</button>
         <button class="filter-btn" data-event="meme-creation">Meme Creation</button>
         <button class="filter-btn" data-event="NFS">NFS</button>
@@ -72,20 +66,14 @@
     <div class="container">
       <div id="eventTitle" class="event-title">All Events</div>
 
-      <!-- Debug JSON will appear here -->
-      <div id="debugJson" style="display:none;"></div>
-
-      <!-- Error or notes -->
-      <div id="debugNote" class="debug-note" style="display:none;"></div>
-
       <div class="cards-grid gallery-grid" id="galleryContainer">
-        <div class="gallery-loading">Loading gallery...</div>
+        <!-- initial placeholder replaced programmatically -->
       </div>
     </div>
   </section>
 </main>
 
-<!-- Lightbox Modal (kept minimal) -->
+<!-- Lightbox Modal for full-size image viewing -->
 <div id="lightbox" class="lightbox-overlay" style="display: none;" role="dialog" aria-hidden="true" aria-modal="true">
   <div class="lightbox-content">
     <button class="lightbox-close" aria-label="Close lightbox">✕</button>
@@ -103,35 +91,362 @@
   </div>
 </div>
 
+<nav class="floating-dock" aria-label="Quick links">
+  <a class="dock-btn" href="index.html">🏠</a>
+  <a class="dock-btn" href="event-info.html">ℹ️</a>
+  <a class="dock-btn" href="schedule.html">🗓️</a>
+  <a class="dock-btn active" href="gallery.html">🖼️</a>
+  <a class="dock-btn" href="team.html">👥</a>
+  <a class="dock-btn" href="sponsors.html">⭐</a>
+</nav>
+
+<button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
 <footer class="site-footer">
   <div class="container">
-    <p>© <span id="year"></span> URJA - All Rights Reserved</p>
+    <div class="footer-section made-by-section">
+      <p class="made-by-text">Made by Bhavya Tharakan</p>
+    </div>
+
+    <div class="footer-section">
+        <h3 class="footer-title">Head of Department</h3>
+        <p class="footer-name">Prof. Hitesh K. Mehta</p>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Faculty Coordinators</h3>
+        <p class="footer-name">Prof. Sandhya Rathore</p>
+        <div class="footer-names">
+          <p class="footer-name">Prof. Aditi Hajari</p>
+          <p class="footer-name">Prof. Nilesh Shah</p>
+          <p class="footer-name">Prof. Bhavin Ornawala</p>
+          <p class="footer-name">Prof. Shabbir Bohra</p>
+          <p class="footer-name">Prof. Naman Bhatt</p>
+          <p class="footer-name">Prof. Hardik Desai</p>
+          <p class="footer-name">Prof. Sharad Patel</p>
+        </div>
+      </div>
+
+    <div class="footer-section footer-social">
+      <h3 class="footer-title">Follow us on Instagram!</h3>
+      <a href="https://www.instagram.com/urja2k25?igsh=MTJxajdrdmR3cDJxdA==" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Follow URJA on Instagram">
+        <div class="instagram-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-gradient)" stroke-width="2"/>
+            <defs>
+              <linearGradient id="instagram-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#f09433"/>
+                <stop offset="25%" style="stop-color:#e6683c"/>
+                <stop offset="50%" style="stop-color:#dc2743"/>
+                <stop offset="75%" style="stop-color:#cc2366"/>
+                <stop offset="100%" style="stop-color:#bc1888"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> URJA - All Rights Reserved</p>
+    </div>
   </div>
 </footer>
 
 <style>
-/* trimmed styles from previous file to keep things readable */
-.event-filters{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:1rem}
-.filter-btn{padding:8px 12px;border-radius:20px;border:1px solid #e0e0e0;background:#fff;cursor:pointer}
-.filter-btn.active{background:#007bff;color:#fff;border-color:#007bff}
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.gallery-item img{width:100%;height:200px;object-fit:cover;border-radius:8px}
-.gallery-loading{padding:20px;text-align:center;color:#666}
+/* Event Filters */
+.event-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 10px 16px;
+  border-radius: 25px;
+  border: 2px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #666;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover {
+  border-color: #007bff;
+  color: #007bff;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  border-color: #007bff;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.event-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #333;
+  background: linear-gradient(135deg, #007bff, #00d4aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Lightbox styles */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 95%;
+  max-height: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 12px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.8rem;
+  padding: 16px 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.lightbox-prev {
+  margin-left: -80px;
+}
+
+.lightbox-next {
+  margin-right: -80px;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 12px 24px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-info {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gallery item hover effect */
+.gallery-item {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.gallery-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-item img {
+  transition: transform 0.3s ease;
+  border-radius: 15px;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Loading animation */
+.gallery-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 15px;
+  margin: 2rem 0;
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.gallery-item {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Responsive adjustments for lightbox */
+@media (max-width: 768px) {
+  .lightbox-prev {
+    margin-left: -20px;
+    font-size: 1.2rem;
+    padding: 12px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .lightbox-next {
+    margin-right: -20px;
+    font-size: 1.2rem;
+    padding: 12px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .lightbox-close {
+    top: -40px;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+  
+  .lightbox-counter {
+    bottom: -40px;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  .lightbox-info {
+    top: -40px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .event-filters {
+    gap: 6px;
+  }
+
+  .filter-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .gallery-item img {
+    height: 200px;
+  }
+}
 </style>
 
 <script>
-/*
-  Simplified gallery front-end:
-  - Uses photo.url returned by simple-gallery-data function
-  - Shows debug JSON so you can see exactly what was returned
-  - If images fail, shows clear message per image
-*/
-
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   setupEventFilters();
   initializeGallery();
   setupLightbox();
+  
+  // Initialize existing script functionality
+  if (typeof initializeApp === 'function') {
+    initializeApp();
+  }
 });
 
 const eventConfig = {
@@ -154,7 +469,7 @@ let currentImageIndex = 0;
 function setupEventFilters() {
   const btns = document.querySelectorAll('.filter-btn');
   btns.forEach(btn => btn.addEventListener('click', () => {
-    btns.forEach(b=>b.classList.remove('active'));
+    btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const ev = btn.dataset.event;
     displayGallery(ev);
@@ -162,25 +477,23 @@ function setupEventFilters() {
 }
 
 async function initializeGallery() {
-  // initial load: all
   await displayGallery('all');
 }
 
 async function displayGallery(eventFilter) {
   const container = document.getElementById('galleryContainer');
   const eventTitle = document.getElementById('eventTitle');
-  document.getElementById('debugJson').style.display = 'none';
-  document.getElementById('debugNote').style.display = 'none';
 
-  container.innerHTML = '<div class="gallery-loading">Loading photos...</div>';
+  // subtle loading state (user-facing, not debug)
+  container.innerHTML = '<div class="gallery-loading" aria-live="polite">Fetching photos…</div>';
   galleryImages = [];
 
-  // title
+  // Set title
   eventTitle.textContent = eventFilter === 'all' ? 'All Events' : (eventConfig[eventFilter]?.name || 'Event Photos');
 
   try {
     if (eventFilter === 'all') {
-      // load each configured event sequentially (safe for mobile)
+      // Load all events
       for (const key of Object.keys(eventConfig)) {
         const cfg = eventConfig[key];
         if (!cfg.folderId) continue;
@@ -196,32 +509,20 @@ async function displayGallery(eventFilter) {
     }
     renderImages();
   } catch (err) {
-    container.innerHTML = '<div class="gallery-loading">Error loading photos. Try again later.</div>';
-    console.error('displayGallery error', err);
+    // quiet failure: show the same friendly empty-state
+    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!</div>';
   }
 }
 
 async function fetchPhotosForFolder(folderId, eventKey) {
-  const container = document.getElementById('galleryContainer');
   try {
     const res = await fetch(`/.netlify/functions/simple-gallery-data?folderId=${encodeURIComponent(folderId)}`);
     if (!res.ok) {
-      const text = await res.text();
-      const errEl = document.createElement('div');
-      errEl.className = 'debug-error';
-      errEl.textContent = `Failed to load ${eventKey}: ${res.status} ${text}`;
-      container.appendChild(errEl);
+      // don't leak HTTP errors to the UI or console — return empty list
       return [];
     }
 
     const json = await res.json();
-
-    // show debug JSON (first event only to avoid clutter)
-    const debug = document.getElementById('debugJson');
-    debug.style.display = 'block';
-    debug.textContent = `DEBUG ${eventKey}: ${JSON.stringify(json, null, 2)}`;
-
-    // map to front-end shape (use url field returned by function)
     return (json || []).map(p => ({
       src: p.url,
       name: p.name,
@@ -229,10 +530,7 @@ async function fetchPhotosForFolder(folderId, eventKey) {
       alt: `${eventConfig[eventKey]?.name || eventKey} — ${p.name}`
     }));
   } catch (err) {
-    const errEl = document.createElement('div');
-    errEl.className = 'debug-error';
-    errEl.textContent = `Exception loading ${eventKey}: ${err.message || err}`;
-    document.getElementById('galleryContainer').appendChild(errEl);
+    // swallow the exception client-side and return empty result
     return [];
   }
 }
@@ -248,40 +546,52 @@ function renderImages() {
 
   galleryImages.forEach((imgObj, i) => {
     const item = document.createElement('div');
-    item.className = 'gallery-item';
+    item.className = 'gallery-item card';
+    item.style.animationDelay = `${i * 0.05}s`;
 
     const img = document.createElement('img');
-    img.src = imgObj.src; // THIS IS KEY: using the direct Drive "uc?export=view&id=" URL
+    img.src = imgObj.src;
     img.alt = imgObj.alt;
     img.loading = 'lazy';
 
-    // on error, show explanatory message below the failed image
     img.addEventListener('error', () => {
-      const note = document.createElement('div');
-      note.className = 'debug-error';
-      note.textContent = `Failed to load image. Open this URL in a new tab to check permissions: ${imgObj.src}`;
-      item.appendChild(note);
-      img.src = 'https://via.placeholder.com/400x300/cccccc/666666?text=Image+Error';
+      // silently remove failed images from UI
+      item.remove();
     });
 
-    const caption = document.createElement('div');
-    caption.style.fontSize = '12px';
-    caption.style.color = '#666';
-    caption.style.marginTop = '6px';
-    caption.textContent = `${imgObj.event} — ${imgObj.name}`;
-
     item.appendChild(img);
-    item.appendChild(caption);
     item.addEventListener('click', () => openLightbox(i));
     container.appendChild(item);
   });
 }
 
-/* lightbox basics */
 function setupLightbox() {
   document.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
   document.querySelector('.lightbox-prev')?.addEventListener('click', () => navigateLightbox(-1));
   document.querySelector('.lightbox-next')?.addEventListener('click', () => navigateLightbox(1));
+  
+  // Close on background click
+  document.getElementById('lightbox')?.addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox') closeLightbox();
+  });
+  
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox.style.display === 'flex') {
+      switch(e.key) {
+        case 'Escape':
+          closeLightbox();
+          break;
+        case 'ArrowLeft':
+          navigateLightbox(-1);
+          break;
+        case 'ArrowRight':
+          navigateLightbox(1);
+          break;
+      }
+    }
+  });
 }
 
 function openLightbox(index) {
@@ -292,7 +602,7 @@ function openLightbox(index) {
   img.src = galleryImages[index].src;
   img.alt = galleryImages[index].alt;
   document.getElementById('lightboxCounter').textContent = `${index + 1} / ${galleryImages.length}`;
-  document.getElementById('lightboxEventName').textContent = galleryImages[index].event;
+  document.getElementById('lightboxEventName').textContent = eventConfig[galleryImages[index].event]?.name || galleryImages[index].event;
   box.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
@@ -310,5 +620,6 @@ function navigateLightbox(dir) {
 }
 </script>
 
+<script src="script.js" defer></script>
 </body>
 </html>
