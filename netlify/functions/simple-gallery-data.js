@@ -1,79 +1,75 @@
 // netlify/functions/simple-gallery-data.js
 const { google } = require('googleapis');
 
-function folderIdForEvent(eventId) {
-  if (!eventId) return null;
-  const map = {
-    'aavishar': process.env.AAVISHAR_FOLDER_ID,
-    'abhivyakthi': process.env.ABHIVYAKTHI_FOLDER_ID,
-    'code-to-circuit': process.env.CODE_TO_CIRCUIT_FOLDER_ID,
-    'cultural': process.env.CULTURAL_FOLDER_ID,
-    'sports': process.env.SPORTS_FOLDER_ID,
-    'workshops': process.env.WORKSHOPS_FOLDER_ID,
-    'competitions': process.env.COMPETITIONS_FOLDER_ID
-  };
-  return map[eventId] || null;
-}
-
-function driveClient() {
-  const key = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
-  const auth = new google.auth.JWT(
-    process.env.GOOGLE_CLIENT_EMAIL,
-    null,
-    key,
-    ['https://www.googleapis.com/auth/drive.readonly']
-  );
-  return google.drive({ version: 'v3', auth });
-}
-
 exports.handler = async (event) => {
   try {
-    const qs = event.queryStringParameters || {};
-    // support either folderId (direct) or eventId (friendly)
-    let folderId = qs.folderId || '';
-    if (!folderId && qs.eventId) folderId = folderIdForEvent(qs.eventId);
-
+    const { folderId } = event.queryStringParameters || {};
+    
     if (!folderId) {
       return {
         statusCode: 400,
-        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Missing folderId or eventId (and no env mapping found)' })
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        body: JSON.stringify({ error: 'Missing folderId parameter' })
       };
     }
 
-    const drive = driveClient();
+    // Google Drive API setup
+    const auth = new google.auth.JWT({
+      email: process.env.GOOGLE_CLIENT_EMAIL,
+      key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+      scopes: ['https://www.googleapis.com/auth/drive']
+    });
 
+    const drive = google.drive({ version: 'v3', auth });
+
+    // Get files from the folder
     const response = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false and mimeType contains 'image/'`,
-      fields: 'files(id, name, mimeType, thumbnailLink, webViewLink)',
-      orderBy: 'createdTime desc',
-      pageSize: 1000
+      fields: 'files(id, name, mimeType)',
+      orderBy: 'createdTime desc'
     });
 
     const files = response.data.files || [];
+    
+    // Convert to public URLs and ensure public access
+    const photos = [];
+    for (const file of files) {
+      try {
+        // Make sure file is publicly readable
+        await drive.permissions.create({
+          fileId: file.id,
+          resource: {
+            role: 'reader',
+            type: 'anyone'
+          }
+        });
+      } catch (permError) {
+        console.log(`Permission already exists for ${file.id} or couldn't set: ${permError.message}`);
+        // Continue anyway - file might already be public
+      }
 
-    const photos = files.map(f => ({
-      id: f.id,
-      name: f.name,
-      mimeType: f.mimeType,
-      webViewLink: f.webViewLink,
-      thumbnailLink: f.thumbnailLink,
-      // direct view URL
-      url: `https://drive.google.com/uc?export=view&id=${file.id}`
-    }));
+      photos.push({
+        id: file.id,
+        name: file.name,
+        url: `https://drive.google.com/uc?export=view&id=${file.id}`
+      });
+    }
 
     return {
       statusCode: 200,
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
+      headers: { 
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(photos)
     };
 
   } catch (error) {
-    console.error('simple-gallery-data error:', error && (error.message || error));
+    console.error('Gallery data error:', error);
     return {
       statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: 'Failed to load photos', details: (error && error.message) })
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Failed to load photos' })
     };
   }
 };
