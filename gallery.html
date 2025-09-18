@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="animated-body">
+<body class="animated-body" data-theme="fire">
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html">
@@ -29,39 +29,45 @@
   </div>
 </header>
 
+<!-- Fire theme background elements -->
+<div class="elemental-bg">
+  <div class="fire-ground"></div>
+</div>
+
 <main id="main">
   <section class="section page-hero">
     <div class="container">
       <h1>Gallery</h1>
       <p class="lead">Explore moments captured from URJA 2025. Select an event to view its photos.</p>
-      
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="event-filters">
-        <button class="filter-btn active" data-event="all">All Events</button>
-        <button class="filter-btn" data-event="aavishar">Aavishar</button>
-        <button class="filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
-        <button class="filter-btn" data-event="code-to-circuit">Code to Circuit</button>
-        <button class="filter-btn" data-event="bidwars">Bidwars</button>
-        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
-        <button class="filter-btn" data-event="game-of-drone">Game of Drone</button>
-        <button class="filter-btn" data-event="meme-creation">Meme Creation</button>
-        <button class="filter-btn" data-event="NFS">NFS</button>
-        <button class="filter-btn" data-event="quiz-whitz-blitz">Quiz Whitz Blitz</button>
-        <button class="filter-btn" data-event="robo-soccer">Robo Soccer</button>
-        <button class="filter-btn" data-event="the-land-of-ludo">The Land of Ludo</button>
+      <div class="urja-filter-bar gallery-filters">
+        <button class="urja-filter-btn urja-active" data-event="all">All Events</button>
+        <button class="urja-filter-btn" data-event="aavishar">Aavishar</button>
+        <button class="urja-filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
+        <button class="urja-filter-btn" data-event="code-to-circuit">Code to Circuit</button>
+        <button class="urja-filter-btn" data-event="bidwars">Bidwars</button>
+        <button class="urja-filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
+        <button class="urja-filter-btn" data-event="game-of-drone">Game of Drone</button>
+        <button class="urja-filter-btn" data-event="meme-creation">Meme Creation</button>
+        <button class="urja-filter-btn" data-event="NFS">NFS</button>
+        <button class="urja-filter-btn" data-event="quiz-whitz-blitz">Quiz Whitz Blitz</button>
+        <button class="urja-filter-btn" data-event="robo-soccer">Robo Soccer</button>
+        <button class="urja-filter-btn" data-event="the-land-of-ludo">The Land of Ludo</button>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div id="eventTitle" class="event-title">All Events</div>
+      <div id="eventTitle" class="section-head">
+        <h2>All Events</h2>
+      </div>
 
-      <div class="cards-grid gallery-grid" id="galleryContainer">
+      <div class="gallery-grid" id="galleryContainer">
         <div class="gallery-loading">Loading gallery...</div>
       </div>
     </div>
@@ -149,54 +155,73 @@
   </div>
 </footer>
 
+<canvas id="global-ember-canvas"></canvas>
+
 <style>
-/* Event Filters */
-.event-filters {
+/* Gallery-specific styles that work with your main CSS */
+
+/* Filter buttons - using your existing urja-filter-btn styles */
+.gallery-filters {
   display: flex;
-  gap: 8px;
+  gap: 0.6rem;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 2rem;
 }
 
-.filter-btn {
-  padding: 10px 16px;
-  border-radius: 25px;
-  border: 2px solid #e0e0e0;
-  background: rgba(255, 255, 255, 0.9);
-  color: #666;
+/* Gallery grid - using your existing gallery-grid styles with enhancements */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Gallery items - enhanced version of your existing styles */
+.gallery-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
   cursor: pointer;
-  font-weight: 500;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  position: relative;
 }
 
-.filter-btn:hover {
-  border-color: #007bff;
-  color: #007bff;
-  transform: translateY(-2px);
+.gallery-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,229,255,0.15);
+  border-color: rgba(0,229,255,0.3);
 }
 
-.filter-btn.active {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: #fff;
-  border-color: #007bff;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+.gallery-item img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  display: block;
 }
 
-.event-title {
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Loading state */
+.gallery-loading {
+  grid-column: 1 / -1;
   text-align: center;
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #333;
-  background: linear-gradient(135deg, #007bff, #00d4aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  padding: 4rem 2rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
-/* Lightbox styles */
+/* Lightbox styles - enhanced to match your theme */
 .lightbox-overlay {
   position: fixed;
   top: 0;
@@ -208,12 +233,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(8px);
 }
 
 .lightbox-content {
   position: relative;
-  max-width: 80vw;
-  max-height: 80vh;
+  max-width: 85vw;
+  max-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,25 +251,19 @@
   width: auto;
   height: auto;
   object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border);
 }
 
-.lightbox-prev {
-  margin-left: -50px;
-}
-
-.lightbox-next {
-  margin-right: -50px;
-}
-
+/* Lightbox controls - styled to match your theme */
 .lightbox-close {
   position: absolute;
-  top: -50px;
+  top: -60px;
   right: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 1001;
@@ -256,11 +276,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow);
 }
 
 .lightbox-close:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--card);
   transform: scale(1.1);
+  color: var(--brand);
 }
 
 .lightbox-nav {
@@ -275,9 +297,9 @@
 
 .lightbox-prev,
 .lightbox-next {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
   font-size: 1.8rem;
   padding: 16px 20px;
   cursor: pointer;
@@ -290,12 +312,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: var(--shadow);
 }
 
 .lightbox-prev:hover,
 .lightbox-next:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--card);
   transform: scale(1.1);
+  color: var(--brand);
 }
 
 .lightbox-prev {
@@ -308,136 +332,131 @@
 
 .lightbox-counter {
   position: absolute;
-  bottom: -50px;
+  bottom: -60px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: var(--text);
   font-size: 1rem;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--panel);
   padding: 12px 24px;
   border-radius: 25px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  font-family: Orbitron, Montserrat, sans-serif;
 }
 
 .lightbox-info {
   position: absolute;
-  top: -50px;
+  top: -60px;
   left: 0;
-  color: white;
+  color: var(--text);
   font-size: 0.9rem;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--panel);
   padding: 8px 16px;
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
-/* Gallery item hover effect */
-.gallery-item {
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border-radius: 15px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.gallery-item:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-.gallery-item img {
-  transition: transform 0.3s ease;
-  border-radius: 15px;
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-
-/* Loading animation */
-.gallery-loading {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 3rem;
-  color: #666;
-  font-size: 1.1rem;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 15px;
-  margin: 2rem 0;
-}
-
-@keyframes fadeInUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
+/* Animations */
+@keyframes galleryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .gallery-item {
-  animation: fadeInUp 0.6s ease forwards;
+  animation: galleryFadeIn 0.6s ease forwards;
 }
 
-/* Responsive adjustments for lightbox */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .gallery-item img {
+    height: 220px;
+  }
+  
+  .gallery-filters {
+    gap: 0.4rem;
+  }
+  
+  .urja-filter-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
   .lightbox-prev {
     margin-left: -20px;
-    font-size: 1.2rem;
-    padding: 12px;
-    width: 45px;
-    height: 45px;
+    font-size: 1.4rem;
+    width: 50px;
+    height: 50px;
   }
   
   .lightbox-next {
     margin-right: -20px;
+    font-size: 1.4rem;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .lightbox-close {
+    top: -50px;
     font-size: 1.2rem;
-    padding: 12px;
     width: 45px;
     height: 45px;
   }
   
-  .lightbox-close {
-    top: -40px;
-    font-size: 1.2rem;
-    width: 40px;
-    height: 40px;
-    padding: 8px;
-  }
-  
   .lightbox-counter {
-    bottom: -40px;
+    bottom: -50px;
     font-size: 0.9rem;
-    padding: 8px 16px;
+    padding: 10px 20px;
   }
 
   .lightbox-info {
-    top: -40px;
+    top: -50px;
     font-size: 0.8rem;
     padding: 6px 12px;
   }
+}
 
-  .event-filters {
-    gap: 6px;
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
   }
-
-  .filter-btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
+  
   .gallery-item img {
-    height: 200px;
+    height: 180px;
   }
+  
+  .gallery-filters {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+/* Fire theme specific enhancements */
+body[data-theme="fire"] .gallery-item:hover {
+  box-shadow: 0 20px 50px rgba(255, 69, 0, 0.15);
+  border-color: rgba(255, 69, 0, 0.3);
+}
+
+body[data-theme="fire"] .lightbox-close:hover,
+body[data-theme="fire"] .lightbox-prev:hover,
+body[data-theme="fire"] .lightbox-next:hover {
+  color: var(--fire-primary);
 }
 </style>
 
@@ -447,6 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventFilters();
   initializeGallery();
   setupLightbox();
+  
+  // Fire theme ember effects
+  initializeEmberEffect();
   
   // Initialize existing script functionality
   if (typeof initializeApp === 'function') {
@@ -472,10 +494,10 @@ let galleryImages = [];
 let currentImageIndex = 0;
 
 function setupEventFilters() {
-  const btns = document.querySelectorAll('.filter-btn');
+  const btns = document.querySelectorAll('.urja-filter-btn');
   btns.forEach(btn => btn.addEventListener('click', () => {
-    btns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    btns.forEach(b => b.classList.remove('urja-active'));
+    btn.classList.add('urja-active');
     const ev = btn.dataset.event;
     displayGallery(ev);
   }));
@@ -487,7 +509,7 @@ async function initializeGallery() {
 
 async function displayGallery(eventFilter) {
   const container = document.getElementById('galleryContainer');
-  const eventTitle = document.getElementById('eventTitle');
+  const eventTitle = document.querySelector('#eventTitle h2');
 
   container.innerHTML = '<div class="gallery-loading">Loading photos...</div>';
   galleryImages = [];
@@ -560,7 +582,7 @@ function renderImages() {
     img.loading = 'lazy';
 
     img.addEventListener('error', () => {
-      item.remove(); // Clean removal of failed images
+      item.remove();
     });
 
     item.appendChild(img);
@@ -621,6 +643,88 @@ function navigateLightbox(dir) {
   if (currentImageIndex < 0) currentImageIndex = galleryImages.length - 1;
   if (currentImageIndex >= galleryImages.length) currentImageIndex = 0;
   openLightbox(currentImageIndex);
+}
+
+// Fire theme ember effect
+function initializeEmberEffect() {
+  const canvas = document.getElementById('global-ember-canvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  const embers = [];
+  const maxEmbers = 20;
+  
+  class Ember {
+    constructor() {
+      this.reset();
+      this.y = Math.random() * canvas.height;
+    }
+    
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height + 10;
+      this.size = Math.random() * 3 + 1;
+      this.speedY = -(Math.random() * 2 + 0.5);
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.opacity = Math.random() * 0.5 + 0.3;
+      this.life = Math.random() * 100 + 50;
+      this.maxLife = this.life;
+    }
+    
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.life--;
+      this.opacity = (this.life / this.maxLife) * 0.8;
+      
+      if (this.life <= 0 || this.y < -10) {
+        this.reset();
+      }
+    }
+    
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.opacity;
+      
+      const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+      gradient.addColorStop(0, '#FF6B35');
+      gradient.addColorStop(0.5, '#FF4500');
+      gradient.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  
+  // Initialize embers
+  for (let i = 0; i < maxEmbers; i++) {
+    embers.push(new Ember());
+  }
+  
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    embers.forEach(ember => {
+      ember.update();
+      ember.draw();
+    });
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+  
+  // Handle resize
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
 }
 </script>
 
