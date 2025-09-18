@@ -212,16 +212,17 @@
 
 .lightbox-content {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 95vw;
+  height: 95vw;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .lightbox-content img {
-  max-width: 90vw;   /* almost full width of viewport */
-  max-height: 90vh;  /* almost full height of viewport */
+  width: 100%;    /* Changed: from max-width to width */
+  height: 100%;   /* Changed: from max-height to height */
+  
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
