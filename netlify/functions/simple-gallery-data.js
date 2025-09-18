@@ -21,22 +21,34 @@ exports.handler = async (event) => {
 
     const drive = google.drive({ version: 'v3', auth });
 
-    // Get files from the folder
     const response = await drive.files.list({
       q: `'${folderId}' in parents and trashed = false and mimeType contains 'image/'`,
-      fields: 'files(id, name, mimeType, thumbnailLink)',
+      fields: 'files(id, name, mimeType)',
       orderBy: 'createdTime desc'
     });
 
     const files = response.data.files || [];
     
-    // Use thumbnail URLs which are more reliable for display
-    const photos = files.map(file => ({
-      id: file.id,
-      name: file.name,
-      // Use the thumbnail URL with a larger size parameter
-      url: file.thumbnailLink ? file.thumbnailLink.replace('=s220', '=s800') : `https://drive.google.com/thumbnail?id=${file.id}&sz=w800-h600`
-    }));
+    // Alternative version that gets file content directly
+    const photos = [];
+    for (const file of files) {
+      try {
+        // Make sure file is public
+        await drive.permissions.create({
+          fileId: file.id,
+          resource: { role: 'reader', type: 'anyone' }
+        });
+        
+        // Use direct content URL
+        photos.push({
+          id: file.id,
+          name: file.name,
+          url: `https://lh3.googleusercontent.com/d/${file.id}=w800-h600`
+        });
+      } catch (err) {
+        console.log(`Error with file ${file.id}: ${err.message}`);
+      }
+    }
 
     return {
       statusCode: 200,
