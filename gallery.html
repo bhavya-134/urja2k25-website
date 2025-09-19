@@ -1,6 +1,4 @@
-<canvas id="global-ember-canvas"></canvas><!-- Elemental background for fire theme particles -->
-<div id="elemental-bg" class="elemental-bg">
-</div><canvas id="global-ember-canvas"></canvas><!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -9,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="animated-body" data-theme="fire">
+<body class="animated-body">
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html">
@@ -31,8 +29,6 @@
   </div>
 </header>
 
-
-
 <main id="main">
   <section class="section page-hero">
     <div class="container">
@@ -43,19 +39,19 @@
 
   <section class="section">
     <div class="container">
-      <div class="gallery-filters">
-        <button class="filter-btn active" data-event="all">All Events</button>
-        <button class="filter-btn" data-event="aavishar">Aavishar</button>
-        <button class="filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
-        <button class="filter-btn" data-event="code-to-circuit">Code to Circuit</button>
-        <button class="filter-btn" data-event="bidwars">Bidwars</button>
-        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
-        <button class="filter-btn" data-event="game-of-drone">Game of Drone</button>
-        <button class="filter-btn" data-event="meme-creation">Meme Creation</button>
-        <button class="filter-btn" data-event="NFS">NFS</button>
-        <button class="filter-btn" data-event="quiz-whitz-blitz">Quiz Whitz Blitz</button>
-        <button class="filter-btn" data-event="robo-soccer">Robo Soccer</button>
-        <button class="filter-btn" data-event="the-land-of-ludo">The Land of Ludo</button>
+      <div class="tabs" role="tablist" aria-label="Gallery filter tabs">
+        <button class="tab active" data-event="all" role="tab" aria-selected="true">All Events</button>
+        <button class="tab" data-event="aavishar" role="tab" aria-selected="false">Aavishar</button>
+        <button class="tab" data-event="abhivyakthi" role="tab" aria-selected="false">Abhivyakthi</button>
+        <button class="tab" data-event="code-to-circuit" role="tab" aria-selected="false">Code to Circuit</button>
+        <button class="tab" data-event="bidwars" role="tab" aria-selected="false">Bidwars</button>
+        <button class="tab" data-event="escape-the-unknown" role="tab" aria-selected="false">Escape the Unknown</button>
+        <button class="tab" data-event="game-of-drone" role="tab" aria-selected="false">Game of Drone</button>
+        <button class="tab" data-event="meme-creation" role="tab" aria-selected="false">Meme Creation</button>
+        <button class="tab" data-event="NFS" role="tab" aria-selected="false">NFS</button>
+        <button class="tab" data-event="quiz-whitz-blitz" role="tab" aria-selected="false">Quiz Whitz Blitz</button>
+        <button class="tab" data-event="robo-soccer" role="tab" aria-selected="false">Robo Soccer</button>
+        <button class="tab" data-event="the-land-of-ludo" role="tab" aria-selected="false">The Land of Ludo</button>
       </div>
     </div>
   </section>
@@ -63,7 +59,6 @@
   <section class="section">
     <div class="container">
       <div id="eventTitle" class="event-title">All Events</div>
-
       <div class="gallery-grid" id="galleryContainer">
         <div class="gallery-loading">Loading gallery...</div>
       </div>
@@ -112,8 +107,8 @@
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Faculty Coordinators</h3>
-        <p class="footer-name">Prof. Sandhya Rathore</p>
         <div class="footer-names">
+          <p class="footer-name">Prof. Sandhya Rathore</p>
           <p class="footer-name">Prof. Aditi Hajari</p>
           <p class="footer-name">Prof. Nilesh Shah</p>
           <p class="footer-name">Prof. Bhavin Ornawala</p>
@@ -152,13 +147,11 @@
   </div>
 </footer>
 
-<canvas id="global-ember-canvas"></canvas>
-
 <style>
-/* Gallery-specific styles that work with your main CSS */
+/* Gallery-specific styles that integrate with your main CSS */
 
-/* Filter buttons - using your existing filter styling */
-.gallery-filters {
+/* Use the same tabs styling as schedule page */
+.tabs {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -166,7 +159,7 @@
   margin-bottom: 2rem;
 }
 
-.filter-btn {
+.tab {
   padding: 10px 16px;
   border-radius: 25px;
   border: 2px solid var(--border);
@@ -179,14 +172,14 @@
   font-size: 0.9rem;
 }
 
-.filter-btn:hover {
+.tab:hover {
   border-color: var(--brand);
   color: var(--brand);
   transform: translateY(-2px);
   background: var(--card);
 }
 
-.filter-btn.active {
+.tab.active {
   background: linear-gradient(90deg, var(--brand), var(--accent));
   color: #001018;
   border-color: var(--brand);
@@ -198,14 +191,14 @@
   font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  font-family: Orbitron, Montserrat, sans-serif;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
   background: linear-gradient(90deg, var(--brand), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Gallery grid - using your existing gallery-grid styles with enhancements */
+/* Gallery grid */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -213,7 +206,7 @@
   margin-top: 2rem;
 }
 
-/* Gallery items - enhanced version of your existing styles */
+/* Gallery items */
 .gallery-item {
   background: var(--card);
   border: 1px solid var(--border);
@@ -257,7 +250,7 @@
   box-shadow: var(--shadow);
 }
 
-/* Lightbox styles - enhanced to match your theme */
+/* Lightbox styles */
 .lightbox-overlay {
   position: fixed;
   top: 0;
@@ -292,7 +285,7 @@
   border: 1px solid var(--border);
 }
 
-/* Lightbox controls - styled to match your theme */
+/* Lightbox controls */
 .lightbox-close {
   position: absolute;
   top: -60px;
@@ -379,7 +372,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  font-family: Orbitron, Montserrat, sans-serif;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
 }
 
 .lightbox-info {
@@ -476,18 +469,6 @@
     height: 180px;
   }
 }
-
-/* Fire theme specific enhancements */
-body[data-theme="fire"] .gallery-item:hover {
-  box-shadow: 0 20px 50px rgba(255, 69, 0, 0.15);
-  border-color: rgba(255, 69, 0, 0.3);
-}
-
-body[data-theme="fire"] .lightbox-close:hover,
-body[data-theme="fire"] .lightbox-prev:hover,
-body[data-theme="fire"] .lightbox-next:hover {
-  color: var(--fire-primary);
-}
 </style>
 
 <script>
@@ -496,22 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventFilters();
   initializeGallery();
   setupLightbox();
-  
-  // Initialize theme and ember effects (using your existing script.js functions)
-  if (typeof initTheme === 'function') {
-    initTheme();
-  }
-  if (typeof initElementalBg === 'function') {
-    initElementalBg();
-  }
-  if (typeof initGlobalEmbers === 'function') {
-    setTimeout(() => initGlobalEmbers(), 80);
-  }
-  
-  // Initialize existing script functionality
-  if (typeof initializeApp === 'function') {
-    initializeApp();
-  }
 });
 
 const eventConfig = {
@@ -682,7 +647,6 @@ function navigateLightbox(dir) {
   if (currentImageIndex >= galleryImages.length) currentImageIndex = 0;
   openLightbox(currentImageIndex);
 }
-
 </script>
 
 <script src="script.js" defer></script>
