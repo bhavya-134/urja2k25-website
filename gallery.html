@@ -39,19 +39,19 @@
 
   <section class="section">
     <div class="container">
-      <div class="tabs" role="tablist" aria-label="Gallery filter tabs">
-        <button class="tab active" data-event="all" role="tab" aria-selected="true">All Events</button>
-        <button class="tab" data-event="aavishar" role="tab" aria-selected="false">Aavishar</button>
-        <button class="tab" data-event="abhivyakthi" role="tab" aria-selected="false">Abhivyakthi</button>
-        <button class="tab" data-event="code-to-circuit" role="tab" aria-selected="false">Code to Circuit</button>
-        <button class="tab" data-event="bidwars" role="tab" aria-selected="false">Bidwars</button>
-        <button class="tab" data-event="escape-the-unknown" role="tab" aria-selected="false">Escape the Unknown</button>
-        <button class="tab" data-event="game-of-drone" role="tab" aria-selected="false">Game of Drone</button>
-        <button class="tab" data-event="meme-creation" role="tab" aria-selected="false">Meme Creation</button>
-        <button class="tab" data-event="NFS" role="tab" aria-selected="false">NFS</button>
-        <button class="tab" data-event="quiz-whitz-blitz" role="tab" aria-selected="false">Quiz Whitz Blitz</button>
-        <button class="tab" data-event="robo-soccer" role="tab" aria-selected="false">Robo Soccer</button>
-        <button class="tab" data-event="the-land-of-ludo" role="tab" aria-selected="false">The Land of Ludo</button>
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-event="all">All Events</button>
+        <button class="filter-btn" data-event="aavishar">Aavishar</button>
+        <button class="filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
+        <button class="filter-btn" data-event="code-to-circuit">Code to Circuit</button>
+        <button class="filter-btn" data-event="bidwars">Bidwars</button>
+        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
+        <button class="filter-btn" data-event="game-of-drone">Game of Drone</button>
+        <button class="filter-btn" data-event="meme-creation">Meme Creation</button>
+        <button class="filter-btn" data-event="NFS">NFS</button>
+        <button class="filter-btn" data-event="quiz-whitz-blitz">Quiz Whitz Blitz</button>
+        <button class="filter-btn" data-event="robo-soccer">Robo Soccer</button>
+        <button class="filter-btn" data-event="the-land-of-ludo">The Land of Ludo</button>
       </div>
     </div>
   </section>
@@ -150,8 +150,8 @@
 <style>
 /* Gallery-specific styles that integrate with your main CSS */
 
-/* Use the same tabs styling as schedule page */
-.tabs {
+/* Filter buttons */
+.gallery-filters {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -159,7 +159,7 @@
   margin-bottom: 2rem;
 }
 
-.tab {
+.filter-btn {
   padding: 10px 16px;
   border-radius: 25px;
   border: 2px solid var(--border);
@@ -172,14 +172,14 @@
   font-size: 0.9rem;
 }
 
-.tab:hover {
+.filter-btn:hover {
   border-color: var(--brand);
   color: var(--brand);
   transform: translateY(-2px);
   background: var(--card);
 }
 
-.tab.active {
+.filter-btn.active {
   background: linear-gradient(90deg, var(--brand), var(--accent));
   color: #001018;
   border-color: var(--brand);
