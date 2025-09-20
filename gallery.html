@@ -608,72 +608,81 @@ function renderImages() {
   container.innerHTML = '';
 
   if (galleryImages.length === 0) {
-    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!<br><small>If this persists, please check your internet connection.</small></div>';
+    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!</div>';
     return;
   }
 
   console.log(`Rendering ${galleryImages.length} images`);
   
-  galleryImages.forEach((imgObj, i) => {
+  // Limit initial load to first 20 images for better performance
+  const imagesToShow = galleryImages.slice(0, 20);
+  const hasMore = galleryImages.length > 20;
+  
+  imagesToShow.forEach((imgObj, i) => {
     const item = document.createElement('div');
     item.className = 'gallery-item card';
     item.style.animationDelay = `${i * 0.05}s`;
 
     const img = document.createElement('img');
+    img.src = imgObj.src;
     img.alt = imgObj.alt;
-    img.loading = 'lazy'; // Browser native lazy loading
-    img.style.minHeight = '280px';
-    img.style.backgroundColor = 'var(--panel)';
-
-    // Add loading placeholder
-    const placeholder = document.createElement('div');
-    placeholder.className = 'image-placeholder';
-    placeholder.style.cssText = `
-      width: 100%;
-      height: 280px;
-      background: var(--panel);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-      position: absolute;
-      top: 0;
-      left: 0;
-    `;
-    placeholder.textContent = 'Loading...';
-    
-    // Position item relatively for absolute placeholder
-    item.style.position = 'relative';
-    item.appendChild(placeholder);
-
-    // Use Intersection Observer for better lazy loading
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !img.src) {
-          img.src = imgObj.src;
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '50px' });
-
-    observer.observe(item);
+    img.loading = 'lazy';
 
     img.addEventListener('load', () => {
-      placeholder.remove();
-      item.appendChild(img);
+      console.log(`Image loaded: ${imgObj.name}`);
     });
 
     img.addEventListener('error', (e) => {
       console.error(`Failed to load image: ${imgObj.src}`, e);
-      placeholder.textContent = 'Failed to load';
-      placeholder.style.color = '#ff6b6b';
+      item.style.border = '2px solid #ff6b6b';
+      item.innerHTML = '<div style="padding: 20px; color: #ff6b6b; text-align: center;">Failed to load</div>';
     });
 
-    item.addEventListener('click', () => {
-      if (item.contains(img) && img.complete) openLightbox(i);
+    item.appendChild(img);
+    item.addEventListener('click', () => openLightbox(i));
+    container.appendChild(item);
+  });
+  
+  // Add "Load More" button if there are more images
+  if (hasMore) {
+    const loadMoreBtn = document.createElement('button');
+    loadMoreBtn.textContent = `Load More (${galleryImages.length - 20} remaining)`;
+    loadMoreBtn.className = 'filter-btn';
+    loadMoreBtn.style.gridColumn = '1 / -1';
+    loadMoreBtn.style.justifySelf = 'center';
+    loadMoreBtn.style.marginTop = '20px';
+    
+    loadMoreBtn.addEventListener('click', () => {
+      loadMoreBtn.remove();
+      renderRemainingImages(20);
     });
     
+    container.appendChild(loadMoreBtn);
+  }
+}
+
+function renderRemainingImages(startIndex) {
+  const container = document.getElementById('galleryContainer');
+  const remainingImages = galleryImages.slice(startIndex);
+  
+  remainingImages.forEach((imgObj, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item card';
+    item.style.animationDelay = `${i * 0.05}s`;
+
+    const img = document.createElement('img');
+    img.src = imgObj.src;
+    img.alt = imgObj.alt;
+    img.loading = 'lazy';
+
+    img.addEventListener('error', (e) => {
+      console.error(`Failed to load image: ${imgObj.src}`, e);
+      item.style.border = '2px solid #ff6b6b';
+      item.innerHTML = '<div style="padding: 20px; color: #ff6b6b; text-align: center;">Failed to load</div>';
+    });
+
+    item.appendChild(img);
+    item.addEventListener('click', () => openLightbox(startIndex + i));
     container.appendChild(item);
   });
 }
