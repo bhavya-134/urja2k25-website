@@ -52,19 +52,36 @@ exports.handler = async (event, context) => {
     // Get files from the specified folder
     const response = await drive.files.list({
       q: `'${folderId}' in parents and mimeType contains 'image/' and trashed=false`,
-      fields: 'files(id, name, mimeType, size)',
+      fields: 'files(id, name)',
       orderBy: 'name'
     });
 
     const files = response.data.files || [];
 
-    // FIXED: Use public-accessible Google Drive URLs instead of thumbnail URLs
-    const photos = files.map(file => ({
-      name: file.name,
-      // OLD (BROKEN): url: `https://drive.google.com/thumbnail?id=${file.id}&sz=w800`
-      // NEW (WORKING): Use lh3.googleusercontent.com for public access
-      url: `https://lh3.googleusercontent.com/d/${file.id}=s800-c`
-      // Alternative that also works: url: `https://drive.google.com/uc?export=view&id=${file.id}`
+    // Alternative: Get direct download links
+    const photos = await Promise.all(files.map(async (file) => {
+      try {
+        // Get file metadata including webViewLink and webContentLink
+        const fileData = await drive.files.get({
+          fileId: file.id,
+          fields: 'id,name,webViewLink,webContentLink'
+        });
+        
+        return {
+          name: file.name,
+          // Use this URL format for direct viewing/download
+          url: `https://drive.google.com/uc?export=view&id=${file.id}`,
+          // Backup URLs to try if needed:
+          // backupUrl1: fileData.data.webContentLink,
+          // backupUrl2: `https://drive.google.com/thumbnail?id=${file.id}&sz=w800`,
+        };
+      } catch (err) {
+        console.error(`Error processing file ${file.name}:`, err);
+        return {
+          name: file.name,
+          url: `https://drive.google.com/uc?export=view&id=${file.id}`
+        };
+      }
     }));
 
     return {
