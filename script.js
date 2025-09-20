@@ -391,7 +391,6 @@ const URJA_EVENTS = {
   "Quiz-Whitz-Blitz": { title:"Quiz Whitz Blitz", fees:["Free"], coordinators:["YASH JINWALA, MUEEN"], volunteers:["DAKSH PATEL, AYUSH, SANKET"] },
   "Escape-the-Unknown": { title:"Escape the Unknown", fees:["₹20/-"], coordinators:["DURVA PATEL, SURTI NAYAN, SHUBHAM PATEL"], volunteers:["JAINAM, KUNAL TAYADE"] },
   "The-Land-of-Ludo": { title:"The Land of Ludo", fees:["₹20/-"], coordinators:["MIHIR PAREKH, AYUSH GANDHI "], volunteers:["AMAR, DALAJA, PRAKASH"] },
-  "Meme-Creation": { title:"Meme Creation", fees:["₹20/-"], coordinators:["MEET SURTI, HARSHAL ZAVERI"], volunteers:["JAY, ADITYA"] },
   "Bidwars": { title:"Bidwars", desc:"Placeholder for Bidwars.", fees:["Free"], coordinators:["YUG, BHAVYA JOSHI, SARVAGNA"], volunteers:["DHRUV MORE, VAISHNAVI, DHRUVI"] },
   "NFS": { title:"NFS", desc:"Placeholder for NFS.", fees:["Solo: ₹20/-     Duo: ₹30/-     Trio: ₹40/-"], coordinators:["SHIVAM VAISHNAV, JAHAN, DAKSH PATEL"], volunteers:["DHRUTI PARMAR, ADITYA AMBADATH, OM, NITANT"] },
   "Robo-Soccer": { title:"Robo Soccer", fees:["₹30/-"], coordinators:["ABHIJIT SANTOSH, DEVAM VAGHASIYA, KAVYA KHANDWALA "], volunteers:["YASH HINGU, DEV, MEGH, LUCKY SHAH"] }
