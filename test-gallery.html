@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>URJA Gallery - Test Version</title>
+  <style>
+    body { 
+      margin: 0; 
+      padding: 20px; 
+      background: #0a0b1e; 
+      color: white; 
+      font-family: Arial, sans-serif;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .debug-info {
+      background: #1a1a2e;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .gallery-item {
+      background: #1a1a2e;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+    .error { color: #ff6b6b; }
+    .success { color: #51cf66; }
+    button {
+      background: #00e5ff;
+      color: #0a0b1e;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>URJA Gallery - Debug Test</h1>
+    
+    <div class="debug-info">
+      <h3>Debug Information:</h3>
+      <p>User Agent: <span id="userAgent"></span></p>
+      <p>Current Time: <span id="currentTime"></span></p>
+      <p>API Test Status: <span id="apiStatus">Not tested</span></p>
+    </div>
+
+    <div>
+      <button onclick="testAllFolders()">Test All API Calls</button>
+      <button onclick="testDecorationOnly()">Test Decoration Committee Only</button>
+      <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div id="results"></div>
+    <div id="gallery" class="gallery-grid"></div>
+  </div>
+
+  <script>
+    // Set debug info
+    document.getElementById('userAgent').textContent = navigator.userAgent;
+    document.getElementById('currentTime').textContent = new Date().toLocaleString();
+
+    const eventConfig = {
+      'decoration-committee': { name: 'Decoration Committee', folderId: '1S2r0T-6rVbLWn4dWTnqiB6pHrgfuC5S6' },
+      aavishar: { name: 'Aavishar', folderId: '1O7_zJIocqBOdBJTPbesLq7O9vVLXe5_M' },
+      abhivyakthi: { name: 'Abhivyakthi', folderId: '1g-5pb66skULa_jcO0h8C66zmzeMMXzhW' }
+    };
+
+    function logResult(message, isError = false) {
+      const results = document.getElementById('results');
+      const div = document.createElement('div');
+      div.innerHTML = `<p class="${isError ? 'error' : 'success'}">${new Date().toLocaleTimeString()}: ${message}</p>`;
+      results.appendChild(div);
+      console.log(message);
+    }
+
+    async function testSingleFolder(eventKey, config) {
+      try {
+        logResult(`Testing ${config.name} (${eventKey})...`);
+        
+        const url = `/.netlify/functions/simple-gallery-data?folderId=${encodeURIComponent(config.folderId)}`;
+        logResult(`Calling: ${url}`);
+        
+        const response = await fetch(url);
+        logResult(`Response status: ${response.status} ${response.statusText}`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        logResult(`Success! Got ${data ? data.length : 0} photos for ${config.name}`);
+        
+        if (data && data.length > 0) {
+          displayImages(data, eventKey);
+          return data;
+        } else {
+          logResult(`No photos returned for ${config.name}`, true);
+          return [];
+        }
+        
+      } catch (error) {
+        logResult(`Error testing ${config.name}: ${error.message}`, true);
+        return [];
+      }
+    }
+
+    function displayImages(images, eventKey) {
+      const gallery = document.getElementById('gallery');
+      
+      images.forEach((img, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        
+        const imgElement = document.createElement('img');
+        imgElement.src = img.url || img.src;
+        imgElement.alt = img.name || `Image ${index + 1}`;
+        
+        imgElement.onload = () => {
+          logResult(`Image loaded: ${img.name || 'Unnamed'}`);
+        };
+        
+        imgElement.onerror = (e) => {
+          logResult(`Failed to load image: ${img.name || 'Unnamed'} - ${imgElement.src}`, true);
+          imgElement.style.border = '2px solid red';
+        };
+        
+        item.appendChild(imgElement);
+        gallery.appendChild(item);
+      });
+    }
+
+    async function testDecorationOnly() {
+      clearResults();
+      document.getElementById('apiStatus').textContent = 'Testing...';
+      
+      const result = await testSingleFolder('decoration-committee', eventConfig['decoration-committee']);
+      
+      document.getElementById('apiStatus').textContent = result.length > 0 ? 
+        `Success - ${result.length} images` : 'Failed or no images';
+    }
+
+    async function testAllFolders() {
+      clearResults();
+      document.getElementById('apiStatus').textContent = 'Testing all...';
+      
+      let totalImages = 0;
+      
+      for (const [key, config] of Object.entries(eventConfig)) {
+        const result = await testSingleFolder(key, config);
+        totalImages += result.length;
+        
+        // Small delay between calls
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      document.getElementById('apiStatus').textContent = `Complete - ${totalImages} total images`;
+    }
+
+    function clearResults() {
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('gallery').innerHTML = '';
+    }
+
+    // Auto-test decoration committee on load
+    window.onload = () => {
+      logResult('Page loaded, starting auto-test...');
+      setTimeout(() => {
+        testDecorationOnly();
+      }, 1000);
+    };
+  </script>
+</body>
+</html>
