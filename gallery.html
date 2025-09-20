@@ -66,7 +66,6 @@
   </section>
 </main>
 
-<!-- Lightbox Modal for full-size image viewing -->
 <div id="lightbox" class="lightbox-overlay" style="display: none;" role="dialog" aria-hidden="true" aria-modal="true">
   <div class="lightbox-content">
     <button class="lightbox-close" aria-label="Close lightbox">✕</button>
@@ -216,6 +215,9 @@
   transition: all 0.3s ease;
   box-shadow: var(--shadow);
   position: relative;
+  
+  /* Force square shape */
+  aspect-ratio: 1 / 1;
 }
 
 .gallery-item:hover {
@@ -226,7 +228,7 @@
 
 .gallery-item img {
   width: 100%;
-  height: 280px;
+  height: 100%;
   object-fit: cover;
   transition: all 0.3s ease;
   display: block;
@@ -412,10 +414,6 @@
     gap: 1rem;
   }
   
-  .gallery-item img {
-    height: 220px;
-  }
-  
   .gallery-filters {
     gap: 6px;
   }
@@ -463,10 +461,6 @@
   .gallery-grid {
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
-  }
-  
-  .gallery-item img {
-    height: 180px;
   }
 }
 </style>
