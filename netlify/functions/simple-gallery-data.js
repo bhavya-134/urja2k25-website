@@ -58,30 +58,10 @@ exports.handler = async (event, context) => {
 
     const files = response.data.files || [];
 
-    // Alternative: Get direct download links
-    const photos = await Promise.all(files.map(async (file) => {
-      try {
-        // Get file metadata including webViewLink and webContentLink
-        const fileData = await drive.files.get({
-          fileId: file.id,
-          fields: 'id,name,webViewLink,webContentLink'
-        });
-        
-        return {
-          name: file.name,
-          // Use this URL format for direct viewing/download
-          url: `https://drive.google.com/uc?export=view&id=${file.id}`,
-          // Backup URLs to try if needed:
-          // backupUrl1: fileData.data.webContentLink,
-          // backupUrl2: `https://drive.google.com/thumbnail?id=${file.id}&sz=w800`,
-        };
-      } catch (err) {
-        console.error(`Error processing file ${file.name}:`, err);
-        return {
-          name: file.name,
-          url: `https://drive.google.com/uc?export=view&id=${file.id}`
-        };
-      }
+    // Use the thumbnail URL for direct image display
+    const photos = files.map(file => ({
+      name: file.name,
+      url: `https://drive.google.com/thumbnail?id=${file.id}&sz=w800`
     }));
 
     return {
