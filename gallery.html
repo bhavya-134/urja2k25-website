@@ -526,13 +526,24 @@ async function displayGallery(eventFilter) {
 
   try {
     if (eventFilter === 'all') {
-      // Load all events
+      const totalEvents = Object.keys(eventConfig).length;
+      let loadedEvents = 0;
+      
+      // Load all events with progress indicator
       for (const key of Object.keys(eventConfig)) {
         const cfg = eventConfig[key];
         if (!cfg.folderId) continue;
+        
+        // Update progress
+        container.innerHTML = `<div class="gallery-loading">Loading photos... (${loadedEvents + 1}/${totalEvents} events)<br><small>Loading ${cfg.name}...</small></div>`;
+        
         try {
           const photos = await fetchPhotosForFolder(cfg.folderId, key);
           galleryImages.push(...photos);
+          loadedEvents++;
+          
+          // Update progress with count
+          container.innerHTML = `<div class="gallery-loading">Loading photos... (${loadedEvents}/${totalEvents} events)<br><small>Found ${galleryImages.length} photos so far...</small></div>`;
         } catch (folderErr) {
           console.error(`Failed to load folder ${key}:`, folderErr);
         }
@@ -609,9 +620,10 @@ function renderImages() {
     item.style.animationDelay = `${i * 0.05}s`;
 
     const img = document.createElement('img');
-    img.src = imgObj.src;
     img.alt = imgObj.alt;
-    img.loading = 'lazy';
+    img.loading = 'lazy'; // Browser native lazy loading
+    img.style.minHeight = '280px';
+    img.style.backgroundColor = 'var(--panel)';
 
     // Add loading placeholder
     const placeholder = document.createElement('div');
@@ -625,9 +637,27 @@ function renderImages() {
       justify-content: center;
       color: var(--muted);
       font-size: 0.9rem;
+      position: absolute;
+      top: 0;
+      left: 0;
     `;
     placeholder.textContent = 'Loading...';
+    
+    // Position item relatively for absolute placeholder
+    item.style.position = 'relative';
     item.appendChild(placeholder);
+
+    // Use Intersection Observer for better lazy loading
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !img.src) {
+          img.src = imgObj.src;
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '50px' });
+
+    observer.observe(item);
 
     img.addEventListener('load', () => {
       placeholder.remove();
@@ -638,11 +668,10 @@ function renderImages() {
       console.error(`Failed to load image: ${imgObj.src}`, e);
       placeholder.textContent = 'Failed to load';
       placeholder.style.color = '#ff6b6b';
-      // Don't remove the item, show error state instead
     });
 
     item.addEventListener('click', () => {
-      if (item.contains(img)) openLightbox(i);
+      if (item.contains(img) && img.complete) openLightbox(i);
     });
     
     container.appendChild(item);
