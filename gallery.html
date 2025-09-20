@@ -516,6 +516,10 @@ async function displayGallery(eventFilter) {
 
   container.innerHTML = '<div class="gallery-loading">Loading photos...</div>';
   galleryImages = [];
+  
+  // Debug info
+  console.log('User Agent:', navigator.userAgent);
+  console.log('Current URL:', window.location.href);
 
   // Set title
   eventTitle.textContent = eventFilter === 'all' ? 'All Events' : (eventConfig[eventFilter]?.name || 'Event Photos');
@@ -526,8 +530,12 @@ async function displayGallery(eventFilter) {
       for (const key of Object.keys(eventConfig)) {
         const cfg = eventConfig[key];
         if (!cfg.folderId) continue;
-        const photos = await fetchPhotosForFolder(cfg.folderId, key);
-        galleryImages.push(...photos);
+        try {
+          const photos = await fetchPhotosForFolder(cfg.folderId, key);
+          galleryImages.push(...photos);
+        } catch (folderErr) {
+          console.error(`Failed to load folder ${key}:`, folderErr);
+        }
       }
     } else {
       const cfg = eventConfig[eventFilter];
@@ -536,22 +544,41 @@ async function displayGallery(eventFilter) {
         galleryImages.push(...photos);
       }
     }
+    
+    console.log(`Total images loaded: ${galleryImages.length}`);
     renderImages();
   } catch (err) {
-    container.innerHTML = '<div class="gallery-loading">Error loading photos. Please try again later.</div>';
     console.error('displayGallery error', err);
+    container.innerHTML = `<div class="gallery-loading">Error loading photos: ${err.message}<br><small>Please refresh the page or try again later.</small></div>`;
   }
 }
 
 async function fetchPhotosForFolder(folderId, eventKey) {
   try {
+    console.log(`Loading ${eventKey} with folder ID: ${folderId}`);
     const res = await fetch(`/.netlify/functions/simple-gallery-data?folderId=${encodeURIComponent(folderId)}`);
+    
     if (!res.ok) {
-      console.error(`Failed to load ${eventKey}: ${res.status}`);
+      console.error(`Failed to load ${eventKey}: ${res.status} - ${res.statusText}`);
+      // Try alternative approach for mobile
+      if (res.status === 404) {
+        console.log(`Trying alternative endpoint for ${eventKey}`);
+        const altRes = await fetch(`/api/gallery?folder=${encodeURIComponent(folderId)}`);
+        if (altRes.ok) {
+          const altJson = await altRes.json();
+          return (altJson || []).map(p => ({
+            src: p.url,
+            name: p.name,
+            event: eventKey,
+            alt: `${eventConfig[eventKey]?.name || eventKey} — ${p.name}`
+          }));
+        }
+      }
       return [];
     }
 
     const json = await res.json();
+    console.log(`Loaded ${json?.length || 0} photos for ${eventKey}`);
     
     return (json || []).map(p => ({
       src: p.url,
@@ -570,10 +597,12 @@ function renderImages() {
   container.innerHTML = '';
 
   if (galleryImages.length === 0) {
-    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!</div>';
+    container.innerHTML = '<div class="gallery-loading">No photos available yet. Check back soon!<br><small>If this persists, please check your internet connection.</small></div>';
     return;
   }
 
+  console.log(`Rendering ${galleryImages.length} images`);
+  
   galleryImages.forEach((imgObj, i) => {
     const item = document.createElement('div');
     item.className = 'gallery-item card';
@@ -584,12 +613,38 @@ function renderImages() {
     img.alt = imgObj.alt;
     img.loading = 'lazy';
 
-    img.addEventListener('error', () => {
-      item.remove();
+    // Add loading placeholder
+    const placeholder = document.createElement('div');
+    placeholder.className = 'image-placeholder';
+    placeholder.style.cssText = `
+      width: 100%;
+      height: 280px;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    `;
+    placeholder.textContent = 'Loading...';
+    item.appendChild(placeholder);
+
+    img.addEventListener('load', () => {
+      placeholder.remove();
+      item.appendChild(img);
     });
 
-    item.appendChild(img);
-    item.addEventListener('click', () => openLightbox(i));
+    img.addEventListener('error', (e) => {
+      console.error(`Failed to load image: ${imgObj.src}`, e);
+      placeholder.textContent = 'Failed to load';
+      placeholder.style.color = '#ff6b6b';
+      // Don't remove the item, show error state instead
+    });
+
+    item.addEventListener('click', () => {
+      if (item.contains(img)) openLightbox(i);
+    });
+    
     container.appendChild(item);
   });
 }
