@@ -1382,6 +1382,133 @@ padding: 3rem 0 2rem; }
   .flip-card{ width:92px; height:92px; }
 }
 
+/* Event completion styles */
+.event-completed {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, 
+    rgba(25, 0, 40, 0.9) 0%, 
+    rgba(50, 0, 80, 0.8) 50%, 
+    rgba(25, 0, 40, 0.9) 100%);
+  border-radius: 20px;
+  border: 2px solid var(--brand);
+  box-shadow: 0 20px 60px rgba(0, 229, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.completion-title {
+  font-size: 2.5rem;
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--brand), var(--accent), #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  animation: celebrationGlow 2s ease-in-out infinite alternate;
+}
+
+.completion-message {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.completion-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(0, 229, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  min-width: 120px;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--brand);
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+}
+
+@keyframes celebrationGlow {
+  from {
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 0 40px rgba(255, 215, 0, 0.3);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .completion-title {
+    font-size: 2rem;
+  }
+  
+  .completion-message {
+    font-size: 1rem;
+  }
+  
+  .completion-stats {
+    gap: 1rem;
+  }
+  
+  .stat-item {
+    min-width: 100px;
+    padding: 0.8rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-completed {
+    padding: 1.5rem;
+  }
+  
+  .completion-title {
+    font-size: 1.6rem;
+  }
+  
+  .completion-stats {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .stat-item {
+    min-width: auto;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
 /* =======================================================
    9. URJA Event-Info styles (NAMESPACED — safe to append)
    ======================================================= */
