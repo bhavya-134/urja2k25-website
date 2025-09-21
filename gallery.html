@@ -39,19 +39,23 @@
 
   <section class="section">
     <div class="container">
-      <div class="gallery-filters">
-        <button class="filter-btn" data-event="decoration-committee">Decoration Committee</button>
-        <button class="filter-btn active" data-event="all">All Events</button>
-        <button class="filter-btn" data-event="aavishar">Aavishar</button>
-        <button class="filter-btn" data-event="abhivyakthi">Abhivyakthi</button>
-        <button class="filter-btn" data-event="code-to-circuit">Code to Circuit</button>
-        <button class="filter-btn" data-event="bidwars">Bidwars</button>
-        <button class="filter-btn" data-event="escape-the-unknown">Escape the Unknown</button>
-        <button class="filter-btn" data-event="game-of-drone">Game of Drone</button>
-        <button class="filter-btn" data-event="NFS">NFS</button>
-        <button class="filter-btn" data-event="quiz-whitz-blitz">Quiz Whitz Blitz</button>
-        <button class="filter-btn" data-event="robo-soccer">Robo Soccer</button>
-        <button class="filter-btn" data-event="the-land-of-ludo">The Land of Ludo</button>
+      <div class="gallery-filter-container">
+        <div class="urja-filter-bar" aria-label="Event filters" role="toolbar">
+          <button class="urja-filter-btn urja-active" data-event="all" aria-pressed="true">All Events</button>
+          <button class="urja-filter-btn" data-event="decoration-committee" aria-pressed="false">Decoration Committee</button>
+        </div>
+        <div class="gallery-event-filters">
+          <button class="urja-filter-btn" data-event="aavishar" aria-pressed="false">Aavishar</button>
+          <button class="urja-filter-btn" data-event="abhivyakthi" aria-pressed="false">Abhivyakthi</button>
+          <button class="urja-filter-btn" data-event="code-to-circuit" aria-pressed="false">Code to Circuit</button>
+          <button class="urja-filter-btn" data-event="bidwars" aria-pressed="false">Bidwars</button>
+          <button class="urja-filter-btn" data-event="escape-the-unknown" aria-pressed="false">Escape the Unknown</button>
+          <button class="urja-filter-btn" data-event="game-of-drone" aria-pressed="false">Game of Drone</button>
+          <button class="urja-filter-btn" data-event="NFS" aria-pressed="false">NFS</button>
+          <button class="urja-filter-btn" data-event="quiz-whitz-blitz" aria-pressed="false">Quiz Whitz Blitz</button>
+          <button class="urja-filter-btn" data-event="robo-soccer" aria-pressed="false">Robo Soccer</button>
+          <button class="urja-filter-btn" data-event="the-land-of-ludo" aria-pressed="false">The Land of Ludo</button>
+        </div>
       </div>
     </div>
   </section>
@@ -149,42 +153,31 @@
 <style>
 /* Gallery-specific styles that integrate with your main CSS */
 
-/* Filter buttons */
-.gallery-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
+/* Filter container styling */
+.gallery-filter-container {
   margin-bottom: 2rem;
 }
 
-.filter-btn {
-  padding: 10px 16px;
-  border-radius: 25px;
-  border: 2px solid var(--border);
-  background: var(--panel);
-  color: var(--text);
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  font-size: 0.9rem;
+/* Main filter bar (All Events, Decoration Committee) */
+.urja-filter-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-.filter-btn:hover {
-  border-color: var(--brand);
-  color: var(--brand);
-  transform: translateY(-2px);
-  background: var(--card);
+/* Event filters in organized grid */
+.gallery-event-filters {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.filter-btn.active {
-  background: linear-gradient(90deg, var(--brand), var(--accent));
-  color: #001018;
-  border-color: var(--brand);
-  box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
-}
-
+/* Event title */
 .event-title {
   text-align: center;
   font-size: 1.8rem;
@@ -414,13 +407,35 @@
     gap: 1rem;
   }
   
-  .gallery-filters {
-    gap: 6px;
+  /* Mobile responsiveness for filter bar */
+  @media (max-width: 768px) {
+    .urja-filter-bar {
+      gap: 0.6rem;
+    }
+    
+    .gallery-event-filters {
+      gap: 0.5rem;
+    }
+    
+    .urja-filter-btn {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
   }
 
-  .filter-btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  @media (max-width: 480px) {
+    .gallery-filter-container {
+      margin-bottom: 1.5rem;
+    }
+    
+    .gallery-event-filters {
+      gap: 0.4rem;
+    }
+    
+    .urja-filter-btn {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
   }
   
   .lightbox-prev {
@@ -491,10 +506,14 @@ let galleryImages = [];
 let currentImageIndex = 0;
 
 function setupEventFilters() {
-  const btns = document.querySelectorAll('.filter-btn');
+  const btns = document.querySelectorAll('.urja-filter-btn');
   btns.forEach(btn => btn.addEventListener('click', () => {
-    btns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    btns.forEach(b => {
+      b.classList.remove('urja-active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('urja-active');
+    btn.setAttribute('aria-pressed', 'true');
     const ev = btn.dataset.event;
     displayGallery(ev);
   }));
@@ -641,7 +660,7 @@ function renderImages() {
   if (hasMore) {
     const loadMoreBtn = document.createElement('button');
     loadMoreBtn.textContent = `Load More (${galleryImages.length - 20} remaining)`;
-    loadMoreBtn.className = 'filter-btn';
+    loadMoreBtn.className = 'urja-filter-btn';
     loadMoreBtn.style.gridColumn = '1 / -1';
     loadMoreBtn.style.justifySelf = 'center';
     loadMoreBtn.style.marginTop = '20px';
